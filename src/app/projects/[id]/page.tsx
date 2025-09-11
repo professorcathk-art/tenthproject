@@ -233,7 +233,7 @@ export default function ProjectDetailPage() {
 
               {/* Learning Objectives */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">What You'll Learn</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">What You&apos;ll Learn</h2>
                 <ul className="space-y-2">
                   {project.objectives.map((objective, index) => (
                     <li key={index} className="flex items-start">
@@ -274,7 +274,7 @@ export default function ProjectDetailPage() {
 
               {/* Deliverables */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">What You'll Get</h2>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">What You&apos;ll Get</h2>
                 <ul className="space-y-2">
                   {project.deliverables.map((deliverable, index) => (
                     <li key={index} className="flex items-start">

@@ -39,8 +39,8 @@ export default function DashboardPage() {
     return null
   }
 
-  const isMentor = session.user?.role === 'MENTOR'
-  // const isStudent = session.user?.role === 'STUDENT'
+  const isMentor = (session.user as any)?.role === 'MENTOR'
+  // const isStudent = (session.user as any)?.role === 'STUDENT'
 
   const studentStats = [
     { name: 'Enrolled Projects', value: '3', icon: BookOpenIcon },

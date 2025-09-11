@@ -312,16 +312,16 @@ async function main() {
   ]
 
   for (const projectData of projects) {
-    const mentor = mentorUsers.find(u => u.email === projectData.mentorEmail)
+    const mentor = mentorUsers.find((u: any) => u.email === projectData.mentorEmail)
     if (mentor && mentor.mentorProfile) {
       await prisma.project.create({
         data: {
           title: projectData.title,
           description: projectData.description,
           shortDescription: projectData.shortDescription,
-          category: projectData.category as any,
+          category: projectData.category as "TECHNOLOGY" | "BUSINESS" | "DESIGN" | "ACADEMIC" | "LANGUAGE" | "CREATIVE" | "OTHER",
           subcategory: projectData.subcategory,
-          difficulty: projectData.difficulty as any,
+          difficulty: projectData.difficulty as "BEGINNER" | "INTERMEDIATE" | "ADVANCED",
           duration: projectData.duration,
           price: projectData.price,
           objectives: projectData.objectives,

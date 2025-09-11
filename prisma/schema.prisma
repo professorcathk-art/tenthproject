@@ -1,0 +1,299 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          UserRole  @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Student specific fields
+  studentProfile StudentProfile?
+  
+  // Mentor specific fields
+  mentorProfile MentorProfile?
+
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  enrollments   Enrollment[]
+  reviews       Review[]
+  sentMessages  Message[] @relation("MessageSender")
+  receivedMessages Message[] @relation("MessageReceiver")
+  notifications Notification[]
+  wishlistItems WishlistItem[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  STUDENT
+  MENTOR
+  ADMIN
+}
+
+model StudentProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  bio         String?
+  interests   String[]
+  goals       String?
+  level       String?  // beginner, intermediate, advanced
+  timezone    String?
+  languages   String[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MentorProfile {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  bio             String?
+  specialties     String[]
+  experience      String?
+  qualifications  String[]
+  languages       String[]
+  timezone        String?
+  hourlyRate      Float?
+  isVerified      Boolean  @default(false)
+  rating          Float    @default(0)
+  totalReviews    Int      @default(0)
+  
+  // Social links
+  website         String?
+  linkedin        String?
+  github          String?
+  portfolio       String?
+  
+  // Teaching preferences
+  teachingMethods String[]
+  availableHours  Json?    // Store available time slots
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  projects        Project[]
+  reviews         Review[]
+}
+
+model Project {
+  id              String        @id @default(cuid())
+  mentorId        String
+  mentor          MentorProfile @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+  
+  title           String
+  description     String        @db.Text
+  shortDescription String?
+  category        ProjectCategory
+  subcategory     String?
+  difficulty      DifficultyLevel
+  duration        Int           // in weeks
+  price           Float
+  currency        String        @default("USD")
+  
+  // Project details
+  objectives      String[]      @db.Text
+  prerequisites   String[]      @db.Text
+  tools           String[]      @db.Text
+  deliverables    String[]      @db.Text
+  
+  // Media
+  images          String[]
+  videoUrl        String?
+  thumbnail       String?
+  
+  // Status and settings
+  isActive        Boolean       @default(true)
+  isFeatured      Boolean       @default(false)
+  maxStudents     Int           @default(10)
+  currentStudents Int           @default(0)
+  
+  // Timestamps
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relations
+  enrollments     Enrollment[]
+  reviews         Review[]
+  wishlistItems   WishlistItem[]
+}
+
+enum ProjectCategory {
+  TECHNOLOGY
+  BUSINESS
+  DESIGN
+  ACADEMIC
+  LANGUAGE
+  CREATIVE
+  OTHER
+}
+
+enum DifficultyLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model Enrollment {
+  id          String        @id @default(cuid())
+  studentId   String
+  student     User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  status      EnrollmentStatus @default(PENDING)
+  progress    Float         @default(0) // 0-100 percentage
+  
+  // Payment
+  amount      Float
+  currency    String        @default("USD")
+  paymentId   String?       // Stripe payment intent ID
+  paidAt      DateTime?
+  
+  // Timestamps
+  enrolledAt  DateTime      @default(now())
+  completedAt DateTime?
+  
+  @@unique([studentId, projectId])
+}
+
+enum EnrollmentStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mentorId    String
+  mentor      MentorProfile @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  rating      Int      // 1-5 stars
+  title       String?
+  comment     String?  @db.Text
+  isAnonymous Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([studentId, projectId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  String
+  receiver    User     @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  content     String   @db.Text
+  isRead      Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  data      Json?            // Additional data for the notification
+  
+  createdAt DateTime         @default(now())
+}
+
+enum NotificationType {
+  ENROLLMENT_CONFIRMED
+  PROJECT_STARTED
+  MESSAGE_RECEIVED
+  REVIEW_RECEIVED
+  PAYMENT_RECEIVED
+  SYSTEM_ANNOUNCEMENT
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, projectId])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  icon        String?
+  color       String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

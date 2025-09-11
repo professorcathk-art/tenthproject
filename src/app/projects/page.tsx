@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Navigation from '@/components/navigation'
 import { 
   MagnifyingGlassIcon,
-  FunnelIcon,
   HeartIcon,
   StarIcon,
   ClockIcon,

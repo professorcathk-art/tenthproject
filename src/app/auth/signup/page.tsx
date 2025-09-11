@@ -50,7 +50,7 @@ export default function SignUpPage() {
         const error = await response.json()
         toast.error(error.message || 'An error occurred')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)

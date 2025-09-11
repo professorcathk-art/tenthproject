@@ -9,7 +9,6 @@ import {
   StarIcon,
   ClockIcon,
   UserGroupIcon,
-  CurrencyDollarIcon,
   CheckCircleIcon,
   PlayIcon,
   ChatBubbleLeftRightIcon
@@ -55,7 +54,7 @@ export default function ProjectDetailPage() {
     const mockProject: Project = {
       id: params.id as string,
       title: 'AI Website Development & Monetization',
-      description: 'Learn to build and monetize AI-powered websites from scratch. This comprehensive project covers frontend development with React, AI integration using OpenAI APIs, backend development with Node.js, and business strategies for monetization. You\'ll build a complete SaaS application and learn how to deploy it to production. Throughout this project, you\'ll work on real-world scenarios and build a portfolio-worthy application that you can actually monetize.',
+      description: 'Learn to build and monetize AI-powered websites from scratch. This comprehensive project covers frontend development with React, AI integration using OpenAI APIs, backend development with Node.js, and business strategies for monetization. You&apos;ll build a complete SaaS application and learn how to deploy it to production. Throughout this project, you&apos;ll work on real-world scenarios and build a portfolio-worthy application that you can actually monetize.',
       shortDescription: 'Build and monetize AI-powered websites from scratch',
       category: 'Technology',
       difficulty: 'Intermediate',

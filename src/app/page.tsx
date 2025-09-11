@@ -3,10 +3,7 @@ import Navigation from '@/components/navigation'
 import { 
   AcademicCapIcon, 
   UserGroupIcon, 
-  RocketLaunchIcon,
-  CheckCircleIcon,
-  StarIcon,
-  ArrowRightIcon
+  RocketLaunchIcon
 } from '@heroicons/react/24/outline'
 
 const features = [
@@ -161,7 +158,7 @@ export default function HomePage() {
                 <div key={testimonialIdx} className="pt-8 sm:inline-block sm:w-full sm:px-4">
                   <figure className="rounded-2xl bg-gray-50 p-8 text-sm leading-6">
                     <blockquote className="text-gray-900">
-                      <p>"{testimonial.body}"</p>
+                      <p>&ldquo;{testimonial.body}&rdquo;</p>
                     </blockquote>
                     <figcaption className="mt-6 flex items-center gap-x-4">
                       <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center">

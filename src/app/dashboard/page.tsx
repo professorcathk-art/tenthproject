@@ -40,7 +40,7 @@ export default function DashboardPage() {
   }
 
   const isMentor = session.user?.role === 'MENTOR'
-  const isStudent = session.user?.role === 'STUDENT'
+  // const isStudent = session.user?.role === 'STUDENT'
 
   const studentStats = [
     { name: 'Enrolled Projects', value: '3', icon: BookOpenIcon },

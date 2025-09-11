@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn, getSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
@@ -31,7 +31,7 @@ export default function SignInPage() {
         toast.success('Signed in successfully!')
         router.push('/dashboard')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -42,7 +42,7 @@ export default function SignInPage() {
     setIsLoading(true)
     try {
       await signIn('google', { callbackUrl: '/dashboard' })
-    } catch (error) {
+    } catch {
       toast.error('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)

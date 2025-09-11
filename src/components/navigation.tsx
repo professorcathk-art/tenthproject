@@ -8,9 +8,6 @@ import {
   XMarkIcon,
   UserIcon,
   Cog6ToothIcon,
-  BookOpenIcon,
-  HeartIcon,
-  ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'

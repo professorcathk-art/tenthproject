@@ -23,7 +23,7 @@ export default function Navigation() {
   ]
 
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-white shadow-sm relative z-50">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
@@ -65,6 +65,14 @@ export default function Navigation() {
               >
                 Dashboard
               </Link>
+              {(session.user as { role?: string })?.role === 'ADMIN' && (
+                <Link
+                  href="/admin"
+                  className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                >
+                  Admin
+                </Link>
+              )}
               
               <Menu as="div" className="relative">
                 <Menu.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">

@@ -139,6 +139,7 @@ model Project {
   shortDescription String?
   category        ProjectCategory
   subcategory     String?
+  purposes        ProjectPurpose[]
   difficulty      DifficultyLevel
   duration        Int           // in weeks
   price           Float
@@ -185,6 +186,13 @@ enum DifficultyLevel {
   BEGINNER
   INTERMEDIATE
   ADVANCED
+}
+
+enum ProjectPurpose {
+  MONETARIZE
+  LEISURE
+  CAREER
+  ACADEMIC
 }
 
 model Enrollment {

@@ -14,6 +14,7 @@ export default function CreateProjectPage() {
     description: '',
     shortDescription: '',
     category: 'TECHNOLOGY',
+    purposes: [] as string[],
     difficulty: 'BEGINNER',
     duration: 4,
     price: 0,
@@ -64,6 +65,15 @@ export default function CreateProjectPage() {
     }))
   }
 
+  const handlePurposeChange = (purpose: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      purposes: checked 
+        ? [...prev.purposes, purpose]
+        : prev.purposes.filter(p => p !== purpose)
+    }))
+  }
+
   const handleArrayChange = (field: string, index: number, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -89,9 +99,34 @@ export default function CreateProjectPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement project creation API call
-    console.log('Project data:', formData)
-    alert('Project creation feature coming soon!')
+    
+    // Validate purposes
+    if (formData.purposes.length === 0) {
+      alert('Please select at least one purpose')
+      return
+    }
+
+    try {
+      const response = await fetch('/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        alert('Project created successfully! It will be reviewed by admin before going live.')
+        router.push('/dashboard')
+      } else {
+        alert(`Error: ${result.message}`)
+      }
+    } catch (error) {
+      console.error('Error creating project:', error)
+      alert('Failed to create project. Please try again.')
+    }
   }
 
   return (
@@ -203,6 +238,30 @@ export default function CreateProjectPage() {
                         <option value="INTERMEDIATE">Intermediate</option>
                         <option value="ADVANCED">Advanced</option>
                       </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Purpose * (Select all that apply)
+                    </label>
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { value: 'MONETARIZE', label: 'Monetarize' },
+                        { value: 'LEISURE', label: 'Leisure' },
+                        { value: 'CAREER', label: 'Career' },
+                        { value: 'ACADEMIC', label: 'Academic' }
+                      ].map((purpose) => (
+                        <label key={purpose.value} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            checked={formData.purposes.includes(purpose.value)}
+                            onChange={(e) => handlePurposeChange(purpose.value, e.target.checked)}
+                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                          />
+                          <span className="ml-2 text-sm text-gray-700">{purpose.label}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
                 </div>

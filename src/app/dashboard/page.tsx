@@ -110,49 +110,15 @@ export default function DashboardPage() {
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                   Recent Activity
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <ClockIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm text-gray-900">
-                        {isMentor 
-                          ? 'New student enrolled in "AI Website Development"'
-                          : 'Started "AI Website Development" project'
-                        }
-                      </p>
-                      <p className="text-sm text-gray-500">2 hours ago</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <ChatBubbleLeftRightIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm text-gray-900">
-                        {isMentor 
-                          ? 'Received message from Sarah Chen'
-                          : 'Message from your mentor'
-                        }
-                      </p>
-                      <p className="text-sm text-gray-500">5 hours ago</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <ChartBarIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-sm text-gray-900">
-                        {isMentor 
-                          ? 'Project "Data Analysis" completed'
-                          : 'Completed "Data Analysis" project'
-                        }
-                      </p>
-                      <p className="text-sm text-gray-500">1 day ago</p>
-                    </div>
-                  </div>
+                <div className="text-center py-8">
+                  <ClockIcon className="mx-auto h-8 w-8 text-gray-400" />
+                  <h3 className="mt-2 text-sm font-medium text-gray-900">No recent activity</h3>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {isMentor 
+                      ? 'Start teaching to see your activity here'
+                      : 'Start learning to see your activity here'
+                    }
+                  </p>
                 </div>
               </div>
             </div>

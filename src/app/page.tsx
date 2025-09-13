@@ -8,26 +8,26 @@ import {
 
 const features = [
   {
-    name: 'Learn from Experts',
-    description: 'Connect with industry professionals who have real-world experience in their fields.',
+    name: 'Industry Expert Mentors',
+    description: 'Learn from professionals with 5+ years of real-world experience in top companies like Google, Microsoft, and startups.',
     icon: AcademicCapIcon,
   },
   {
-    name: 'Project-Based Learning',
-    description: 'Learn through hands-on projects that build your portfolio and practical skills.',
+    name: 'Real-World Projects',
+    description: 'Build actual applications, websites, and solutions that you can showcase in your portfolio and resume.',
     icon: RocketLaunchIcon,
   },
   {
-    name: 'Personalized Mentorship',
-    description: 'Get one-on-one guidance tailored to your learning goals and pace.',
+    name: '1-on-1 Mentorship',
+    description: 'Get personalized guidance, code reviews, and career advice from experienced professionals.',
     icon: UserGroupIcon,
   },
 ]
 
 const stats = [
-  { name: 'Active Mentors', value: '500+' },
-  { name: 'Projects Available', value: '1,200+' },
-  { name: 'Students Enrolled', value: '10,000+' },
+  { name: 'Expert Mentors', value: '50+' },
+  { name: 'Real Projects', value: '120+' },
+  { name: 'Students Helped', value: '1,000+' },
   { name: 'Success Rate', value: '95%' },
 ]
 
@@ -75,8 +75,8 @@ export default function HomePage() {
               Learn Through Real Projects
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Connect with expert mentors and gain practical skills through hands-on projects. 
-              Build your portfolio while learning from industry professionals.
+              Master in-demand skills through hands-on projects with industry experts. 
+              Build your portfolio, gain real-world experience, and accelerate your career growth.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
@@ -117,12 +117,12 @@ export default function HomePage() {
       <div className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-indigo-600">Learn Better</h2>
+            <h2 className="text-base font-semibold leading-7 text-indigo-600">Why Choose TenthProject</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Why Project-Based Learning Works
+              Learn from Industry Experts
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Traditional education focuses on theory. We focus on building real skills through real projects.
+              Skip the theory, start building. Our mentors are industry professionals who will guide you through real projects that matter.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
@@ -184,10 +184,10 @@ export default function HomePage() {
         <div className="px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Ready to start your learning journey?
+              Ready to Build Your Future?
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-indigo-200">
-              Join thousands of students who are already building their skills through real projects.
+              Join our community of learners and start building real projects with expert mentors today.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link

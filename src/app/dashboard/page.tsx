@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import Link from 'next/link'
 import Navigation from '@/components/navigation'
 import { 
   BookOpenIcon, 
@@ -43,17 +44,17 @@ export default function DashboardPage() {
   // const isStudent = (session.user as { role?: string })?.role === 'STUDENT'
 
   const studentStats = [
-    { name: 'Enrolled Projects', value: '3', icon: BookOpenIcon },
-    { name: 'Completed Projects', value: '1', icon: ChartBarIcon },
-    { name: 'Wishlist Items', value: '5', icon: HeartIcon },
-    { name: 'Messages', value: '12', icon: ChatBubbleLeftRightIcon },
+    { name: 'Enrolled Projects', value: '0', icon: BookOpenIcon },
+    { name: 'Completed Projects', value: '0', icon: ChartBarIcon },
+    { name: 'Wishlist Items', value: '0', icon: HeartIcon },
+    { name: 'Messages', value: '0', icon: ChatBubbleLeftRightIcon },
   ]
 
   const mentorStats = [
-    { name: 'Active Projects', value: '8', icon: BookOpenIcon },
-    { name: 'Total Students', value: '24', icon: UserGroupIcon },
-    { name: 'Rating', value: '4.9', icon: ChartBarIcon },
-    { name: 'Messages', value: '18', icon: ChatBubbleLeftRightIcon },
+    { name: 'Active Projects', value: '0', icon: BookOpenIcon },
+    { name: 'Total Students', value: '0', icon: UserGroupIcon },
+    { name: 'Rating', value: '0.0', icon: ChartBarIcon },
+    { name: 'Messages', value: '0', icon: ChatBubbleLeftRightIcon },
   ]
 
   const stats = isMentor ? mentorStats : studentStats
@@ -165,33 +166,33 @@ export default function DashboardPage() {
                 <div className="space-y-3">
                   {isMentor ? (
                     <>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      <Link href="/projects/create" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         Create New Project
-                      </button>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      </Link>
+                      <Link href="/mentors" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         View All Students
-                      </button>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      </Link>
+                      <Link href="/profile" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         Update Profile
-                      </button>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      </Link>
+                      <Link href="/analytics" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         View Analytics
-                      </button>
+                      </Link>
                     </>
                   ) : (
                     <>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      <Link href="/projects" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         Browse Projects
-                      </button>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      </Link>
+                      <Link href="/wishlist" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         View Wishlist
-                      </button>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      </Link>
+                      <Link href="/enrollments" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         My Enrollments
-                      </button>
-                      <button className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md">
+                      </Link>
+                      <Link href="/mentors" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         Find Mentors
-                      </button>
+                      </Link>
                     </>
                   )}
                 </div>

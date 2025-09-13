@@ -44,7 +44,11 @@ export default function Navigation() {
         
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <Link key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600">
+            <Link 
+              key={item.name} 
+              href={item.href} 
+              className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors duration-200 cursor-pointer"
+            >
               {item.name}
             </Link>
           ))}
@@ -123,13 +127,13 @@ export default function Navigation() {
             <div className="flex items-center gap-x-4">
               <Link
                 href="/auth/signin"
-                className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600 transition-colors duration-200 cursor-pointer"
               >
                 Sign in
               </Link>
               <Link
                 href="/auth/signup"
-                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors duration-200 cursor-pointer"
               >
                 Get started
               </Link>
@@ -163,7 +167,7 @@ export default function Navigation() {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.name}

@@ -3,6 +3,45 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
+export async function GET() {
+  try {
+    // Get all active projects with mentor information
+    const projects = await prisma.project.findMany({
+      where: {
+        isActive: true
+      },
+      include: {
+        mentor: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true
+              }
+            }
+          }
+        },
+        reviews: {
+          select: {
+            rating: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return NextResponse.json({ projects })
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

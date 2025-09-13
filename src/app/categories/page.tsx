@@ -1,6 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import Navigation from '@/components/navigation'
+import SuggestCategoryModal from '@/components/SuggestCategoryModal'
 import { 
   CodeBracketIcon,
   ChartBarIcon,
@@ -10,7 +12,7 @@ import {
   MusicalNoteIcon
 } from '@heroicons/react/24/outline'
 
-const categories = [
+const areas = [
   {
     name: 'Technology',
     description: 'Programming, AI, Web Development, Mobile Apps',
@@ -36,10 +38,26 @@ const categories = [
     mentors: 10
   },
   {
+    name: 'Architecture',
+    description: 'Building Design, Urban Planning, Construction',
+    icon: BookOpenIcon,
+    color: 'bg-indigo-500',
+    projects: 15,
+    mentors: 4
+  },
+  {
+    name: 'Interior Design',
+    description: 'Space Planning, Decor, Home Styling',
+    icon: PaintBrushIcon,
+    color: 'bg-orange-500',
+    projects: 12,
+    mentors: 3
+  },
+  {
     name: 'Academic',
     description: 'Research, Analysis, Writing, Mathematics',
     icon: BookOpenIcon,
-    color: 'bg-indigo-500',
+    color: 'bg-gray-500',
     projects: 22,
     mentors: 6
   },
@@ -62,6 +80,8 @@ const categories = [
 ]
 
 export default function CategoriesPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
@@ -71,37 +91,37 @@ export default function CategoriesPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Explore Learning Categories
+              Explore Learning Areas
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Discover projects across different fields and find the perfect learning path for your goals
             </p>
           </div>
 
-          {/* Categories Grid */}
+          {/* Areas Grid */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <div key={category.name} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                <div className={`h-32 ${category.color} flex items-center justify-center`}>
-                  <category.icon className="h-16 w-16 text-white" />
+            {areas.map((area) => (
+              <div key={area.name} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <div className={`h-32 ${area.color} flex items-center justify-center`}>
+                  <area.icon className="h-16 w-16 text-white" />
                 </div>
                 
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {category.name}
+                    {area.name}
                   </h3>
                   
                   <p className="text-gray-600 mb-4">
-                    {category.description}
+                    {area.description}
                   </p>
                   
                   <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
-                    <span>{category.projects} Projects</span>
-                    <span>{category.mentors} Mentors</span>
+                    <span>{area.projects} Projects</span>
+                    <span>{area.mentors} Mentors</span>
                   </div>
                   
                   <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
-                    Explore {category.name}
+                    Explore {area.name}
                   </button>
                 </div>
               </div>
@@ -114,14 +134,22 @@ export default function CategoriesPage() {
               Can&apos;t find what you&apos;re looking for?
             </h2>
             <p className="text-gray-600 mb-6">
-              We&apos;re constantly adding new categories and projects. Let us know what you&apos;d like to learn!
+              We&apos;re constantly adding new areas and projects. Let us know what you&apos;d like to learn!
             </p>
-            <button className="bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors">
-              Suggest a Category
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              className="bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors"
+            >
+              Suggest an Area
             </button>
           </div>
         </div>
       </div>
+
+      <SuggestCategoryModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   )
 }

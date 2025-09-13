@@ -338,6 +338,16 @@ async function main() {
     }
   }
 
+  // Set system configuration
+  await prisma.systemConfig.upsert({
+    where: { key: 'COMMISSION_RATE' },
+    update: { value: '0.085' },
+    create: {
+      key: 'COMMISSION_RATE',
+      value: '0.085'
+    }
+  })
+
   console.log('✅ Database seeded successfully!')
 }
 

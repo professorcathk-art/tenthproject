@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Navigation from '@/components/navigation'
+import SuggestCategoryModal from '@/components/SuggestCategoryModal'
 import { 
   MagnifyingGlassIcon,
   StarIcon,
@@ -34,6 +35,7 @@ export default function MentorsPage() {
   const [selectedSpecialty, setSelectedSpecialty] = useState('All')
   const [sortBy, setSortBy] = useState('rating')
   const [isLoading, setIsLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const specialties = [
     'All',
@@ -50,97 +52,39 @@ export default function MentorsPage() {
   ]
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockMentors: Mentor[] = [
-      {
-        id: '1',
-        name: 'Alex Chen',
-        bio: 'Full-stack developer with 8+ years of experience in AI and web development. I love teaching and helping students build real-world projects that make a difference.',
-        specialties: ['AI Development', 'Web Development', 'JavaScript', 'Python'],
-        experience: '8+ years in software development',
-        rating: 4.9,
-        totalReviews: 234,
-        isVerified: true,
-        languages: ['English', 'Mandarin'],
-        hourlyRate: 75,
-        totalStudents: 156,
-        projectsCount: 12
-      },
-      {
-        id: '2',
-        name: 'Sarah Johnson',
-        bio: 'Mobile app developer specializing in React Native and Flutter. I help students create cross-platform apps that users love and that solve real problems.',
-        specialties: ['React Native', 'Flutter', 'Mobile Development', 'UI/UX'],
-        experience: '6+ years in mobile development',
-        rating: 4.8,
-        totalReviews: 156,
-        isVerified: true,
-        languages: ['English'],
-        hourlyRate: 65,
-        totalStudents: 98,
-        projectsCount: 8
-      },
-      {
-        id: '3',
-        name: 'Michael Rodriguez',
-        bio: 'Data scientist and analyst with expertise in Python, machine learning, and business intelligence. I make data accessible and actionable for everyone.',
-        specialties: ['Data Analysis', 'Python', 'Machine Learning', 'Business Intelligence'],
-        experience: '7+ years in data science',
-        rating: 4.7,
-        totalReviews: 189,
-        isVerified: true,
-        languages: ['English', 'Spanish'],
-        hourlyRate: 80,
-        totalStudents: 134,
-        projectsCount: 10
-      },
-      {
-        id: '4',
-        name: 'Emma Thompson',
-        bio: 'UX/UI designer with a passion for creating intuitive and beautiful user experiences. I help students think like designers and create products users love.',
-        specialties: ['UX Design', 'UI Design', 'Figma', 'User Research'],
-        experience: '5+ years in design',
-        rating: 4.9,
-        totalReviews: 167,
-        isVerified: true,
-        languages: ['English'],
-        hourlyRate: 70,
-        totalStudents: 89,
-        projectsCount: 6
-      },
-      {
-        id: '5',
-        name: 'David Kim',
-        bio: 'Digital marketing strategist with expertise in SEO, social media, and growth hacking. I help students build successful online businesses and careers.',
-        specialties: ['Digital Marketing', 'SEO', 'Social Media', 'Growth Hacking'],
-        experience: '6+ years in digital marketing',
-        rating: 4.6,
-        totalReviews: 112,
-        isVerified: true,
-        languages: ['English', 'Korean'],
-        hourlyRate: 60,
-        totalStudents: 76,
-        projectsCount: 5
-      },
-      {
-        id: '6',
-        name: 'Dr. Lisa Wang',
-        bio: 'Machine learning researcher and educator with a PhD in Computer Science. I specialize in making complex AI concepts accessible to learners of all levels.',
-        specialties: ['Machine Learning', 'Deep Learning', 'AI Research', 'Python'],
-        experience: '10+ years in AI research',
-        rating: 4.8,
-        totalReviews: 89,
-        isVerified: true,
-        languages: ['English', 'Mandarin'],
-        hourlyRate: 90,
-        totalStudents: 67,
-        projectsCount: 7
+    const fetchMentors = async () => {
+      try {
+        const response = await fetch('/api/mentors')
+        if (response.ok) {
+          const data = await response.json()
+          // Transform the data to match our interface
+          const transformedMentors: Mentor[] = data.mentors.map((mentor: any) => ({
+            id: mentor.id,
+            name: mentor.user.name || 'Anonymous',
+            bio: mentor.bio || 'No bio available',
+            specialties: mentor.specialties || [],
+            experience: mentor.experience || 'Experience not specified',
+            rating: mentor.rating || 4.5,
+            totalReviews: mentor.totalReviews || 0,
+            isVerified: mentor.isVerified || false,
+            languages: mentor.languages || ['English'],
+            hourlyRate: mentor.hourlyRate || 50,
+            totalStudents: mentor.totalStudents || 0,
+            projectsCount: mentor.projectsCount || 0
+          }))
+          setMentors(transformedMentors)
+          setFilteredMentors(transformedMentors)
+        } else {
+          console.error('Failed to fetch mentors')
+        }
+      } catch (error) {
+        console.error('Error fetching mentors:', error)
+      } finally {
+        setIsLoading(false)
       }
-    ]
+    }
 
-    setMentors(mockMentors)
-    setFilteredMentors(mockMentors)
-    setIsLoading(false)
+    fetchMentors()
   }, [])
 
   // Filter and search logic
@@ -366,19 +310,33 @@ export default function MentorsPage() {
               <p className="mt-1 text-sm text-gray-500">
                 Try adjusting your search criteria or browse all mentors.
               </p>
-              <button
-                onClick={() => {
-                  setSearchTerm('')
-                  setSelectedSpecialty('All')
-                }}
-                className="mt-4 text-indigo-600 hover:text-indigo-500"
-              >
-                Clear all filters
-              </button>
+              <div className="mt-4 space-x-4">
+                <button
+                  onClick={() => {
+                    setSearchTerm('')
+                    setSelectedSpecialty('All')
+                  }}
+                  className="text-indigo-600 hover:text-indigo-500"
+                >
+                  Clear all filters
+                </button>
+                <span className="text-gray-400">or</span>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-indigo-600 hover:text-indigo-500"
+                >
+                  Suggest an Area
+                </button>
+              </div>
             </div>
           )}
         </div>
       </div>
+
+      <SuggestCategoryModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   )
 }

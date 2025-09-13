@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Navigation from '@/components/navigation'
+import SuggestCategoryModal from '@/components/SuggestCategoryModal'
 import { 
   MagnifyingGlassIcon,
   HeartIcon,
@@ -53,123 +54,47 @@ export default function ProjectsPage() {
   const [selectedDifficulty, setSelectedDifficulty] = useState('All')
   const [sortBy, setSortBy] = useState('popular')
   const [isLoading, setIsLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Mock data for demonstration
+  // Fetch real projects from database
   useEffect(() => {
-    const mockProjects: Project[] = [
-      {
-        id: '1',
-        title: 'AI Website Development & Monetization',
-        description: 'Learn to build and monetize AI-powered websites from scratch. Includes frontend development, AI integration, and business strategies.',
-        category: 'Technology',
-        difficulty: 'Intermediate',
-        duration: 8,
-        price: 299,
-        currency: 'USD',
-        rating: 4.9,
-        totalReviews: 127,
-        mentor: {
-          name: 'Alex Chen',
-          rating: 4.9,
-          totalReviews: 234
-        },
-        isWishlisted: false
-      },
-      {
-        id: '2',
-        title: 'Mobile App Development with React Native',
-        description: 'Build cross-platform mobile applications using React Native. Learn state management, navigation, and app store deployment.',
-        category: 'Technology',
-        difficulty: 'Beginner',
-        duration: 6,
-        price: 199,
-        currency: 'USD',
-        rating: 4.8,
-        totalReviews: 89,
-        mentor: {
-          name: 'Sarah Johnson',
-          rating: 4.8,
-          totalReviews: 156
-        },
-        isWishlisted: true
-      },
-      {
-        id: '3',
-        title: 'Data Analysis & Visualization',
-        description: 'Master data analysis using Python, pandas, and visualization tools. Work with real datasets and create compelling visualizations.',
-        category: 'Business',
-        difficulty: 'Intermediate',
-        duration: 4,
-        price: 149,
-        currency: 'USD',
-        rating: 4.7,
-        totalReviews: 203,
-        mentor: {
-          name: 'Michael Rodriguez',
-          rating: 4.7,
-          totalReviews: 189
-        },
-        isWishlisted: false
-      },
-      {
-        id: '4',
-        title: 'UX/UI Design Masterclass',
-        description: 'Learn user experience and interface design principles. Create wireframes, prototypes, and design systems.',
-        category: 'Design',
-        difficulty: 'Beginner',
-        duration: 5,
-        price: 179,
-        currency: 'USD',
-        rating: 4.9,
-        totalReviews: 145,
-        mentor: {
-          name: 'Emma Thompson',
-          rating: 4.9,
-          totalReviews: 167
-        },
-        isWishlisted: false
-      },
-      {
-        id: '5',
-        title: 'Digital Marketing Strategy',
-        description: 'Develop comprehensive digital marketing strategies. Learn SEO, social media marketing, and campaign optimization.',
-        category: 'Business',
-        difficulty: 'Beginner',
-        duration: 3,
-        price: 129,
-        currency: 'USD',
-        rating: 4.6,
-        totalReviews: 98,
-        mentor: {
-          name: 'David Kim',
-          rating: 4.6,
-          totalReviews: 112
-        },
-        isWishlisted: true
-      },
-      {
-        id: '6',
-        title: 'Machine Learning Fundamentals',
-        description: 'Introduction to machine learning concepts and algorithms. Build predictive models using Python and scikit-learn.',
-        category: 'Technology',
-        difficulty: 'Advanced',
-        duration: 10,
-        price: 399,
-        currency: 'USD',
-        rating: 4.8,
-        totalReviews: 76,
-        mentor: {
-          name: 'Dr. Lisa Wang',
-          rating: 4.8,
-          totalReviews: 89
-        },
-        isWishlisted: false
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects')
+        if (response.ok) {
+          const data = await response.json()
+          // Transform the data to match our interface
+          const transformedProjects: Project[] = data.projects.map((project: any) => ({
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            category: project.category,
+            difficulty: project.difficulty,
+            duration: project.duration,
+            price: project.price,
+            currency: project.currency,
+            rating: project.mentor.rating || 4.5,
+            totalReviews: project.mentor.totalReviews || 0,
+            mentor: {
+              name: project.mentor.user.name || 'Anonymous',
+              rating: project.mentor.rating || 4.5,
+              totalReviews: project.mentor.totalReviews || 0
+            },
+            isWishlisted: false
+          }))
+          setProjects(transformedProjects)
+          setFilteredProjects(transformedProjects)
+        } else {
+          console.error('Failed to fetch projects')
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error)
+      } finally {
+        setIsLoading(false)
       }
-    ]
+    }
 
-    setProjects(mockProjects)
-    setFilteredProjects(mockProjects)
-    setIsLoading(false)
+    fetchProjects()
   }, [])
 
   // Filter and search logic
@@ -416,21 +341,35 @@ export default function ProjectsPage() {
           {/* No Results */}
           {filteredProjects.length === 0 && (
             <div className="text-center py-12">
-              <div className="text-gray-500 text-lg">No projects found matching your criteria</div>
-              <button
-                onClick={() => {
-                  setSearchTerm('')
-                  setSelectedCategory('All')
-                  setSelectedDifficulty('All')
-                }}
-                className="mt-4 text-indigo-600 hover:text-indigo-500"
-              >
-                Clear all filters
-              </button>
+              <div className="text-gray-500 text-lg mb-4">No projects found matching your criteria</div>
+              <div className="space-x-4">
+                <button
+                  onClick={() => {
+                    setSearchTerm('')
+                    setSelectedCategory('All')
+                    setSelectedDifficulty('All')
+                  }}
+                  className="text-indigo-600 hover:text-indigo-500"
+                >
+                  Clear all filters
+                </button>
+                <span className="text-gray-400">or</span>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-indigo-600 hover:text-indigo-500"
+                >
+                  Suggest an Area
+                </button>
+              </div>
             </div>
           )}
         </div>
       </div>
+
+      <SuggestCategoryModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   )
 }

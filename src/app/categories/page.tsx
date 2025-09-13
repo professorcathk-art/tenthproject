@@ -2,7 +2,6 @@
 
 import Navigation from '@/components/navigation'
 import { 
-  AcademicCapIcon,
   CodeBracketIcon,
   ChartBarIcon,
   PaintBrushIcon,
@@ -112,10 +111,10 @@ export default function CategoriesPage() {
           {/* Call to Action */}
           <div className="mt-16 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Can't find what you're looking for?
+              Can&apos;t find what you&apos;re looking for?
             </h2>
             <p className="text-gray-600 mb-6">
-              We're constantly adding new categories and projects. Let us know what you'd like to learn!
+              We&apos;re constantly adding new categories and projects. Let us know what you&apos;d like to learn!
             </p>
             <button className="bg-indigo-600 text-white py-3 px-6 rounded-md hover:bg-indigo-700 transition-colors">
               Suggest a Category

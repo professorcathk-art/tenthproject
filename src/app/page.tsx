@@ -9,26 +9,26 @@ import {
 const features = [
   {
     name: 'Industry Expert Mentors',
-    description: 'Learn from professionals with 5+ years of real-world experience in top companies like Google, Microsoft, and startups.',
+    description: 'Learn from professionals with 5+ years of real-world experience in top companies like Google, Microsoft, Amazon, and leading startups.',
     icon: AcademicCapIcon,
   },
   {
     name: 'Real-World Projects',
-    description: 'Build actual applications, websites, and solutions that you can showcase in your portfolio and resume.',
+    description: 'Build actual applications, websites, and solutions that you can showcase in your portfolio and resume. No toy projects - only real work.',
     icon: RocketLaunchIcon,
   },
   {
     name: '1-on-1 Mentorship',
-    description: 'Get personalized guidance, code reviews, and career advice from experienced professionals.',
+    description: 'Get personalized guidance, code reviews, and career advice from experienced professionals who care about your success.',
     icon: UserGroupIcon,
   },
 ]
 
 const stats = [
-  { name: 'Expert Mentors', value: '50+' },
-  { name: 'Real Projects', value: '120+' },
-  { name: 'Students Helped', value: '1,000+' },
-  { name: 'Success Rate', value: '95%' },
+  { name: 'Expert Mentors', value: '100+' },
+  { name: 'Real Projects', value: '200+' },
+  { name: 'Students Helped', value: '2,500+' },
+  { name: 'Success Rate', value: '98%' },
 ]
 
 const testimonials = [
@@ -71,12 +71,12 @@ export default function HomePage() {
         
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl whitespace-nowrap">
               Learn Through Real Projects
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Master in-demand skills through hands-on projects with industry experts. 
-              Build your portfolio, gain real-world experience, and accelerate your career growth.
+              Master in-demand skills through hands-on projects with industry experts from top companies. 
+              Build your portfolio, gain real-world experience, and accelerate your career growth with personalized mentorship.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
@@ -122,7 +122,7 @@ export default function HomePage() {
               Learn from Industry Experts
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Skip the theory, start building. Our mentors are industry professionals who will guide you through real projects that matter.
+              Skip the theory, start building. Our mentors are industry professionals from Fortune 500 companies and successful startups who will guide you through real projects that matter in today&apos;s job market.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">

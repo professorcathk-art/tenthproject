@@ -135,7 +135,7 @@ export default function DashboardPage() {
                       <Link href="/projects/create" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         Create New Project
                       </Link>
-                      <Link href="/mentors" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
+                      <Link href="/students" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">
                         View All Students
                       </Link>
                       <Link href="/profile" className="w-full text-left px-4 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md block">

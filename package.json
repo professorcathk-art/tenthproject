@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "prisma generate && next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "prisma generate",
@@ -12,7 +12,8 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "db:setup": "node scripts/setup-db.js",
-    "create-admin": "node scripts/create-admin.js"
+    "create-admin": "node scripts/create-admin.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",

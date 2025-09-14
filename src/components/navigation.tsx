@@ -73,6 +73,14 @@ export default function Navigation() {
                   Admin
                 </Link>
               )}
+              {(session.user as { role?: string })?.role === 'MENTOR' && (
+                <Link
+                  href="/mentor-dashboard"
+                  className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                >
+                  Mentor Dashboard
+                </Link>
+              )}
               
               <Menu as="div" className="relative">
                 <Menu.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">

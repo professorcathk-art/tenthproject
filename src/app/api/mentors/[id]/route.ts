@@ -79,6 +79,9 @@ export async function GET(
       website: mentor.website,
       linkedin: mentor.linkedin,
       github: mentor.github,
+      twitter: mentor.twitter,
+      instagram: mentor.instagram,
+      personalLinks: mentor.personalLinks,
       portfolio: mentor.portfolio,
       teachingMethods: mentor.teachingMethods
     }

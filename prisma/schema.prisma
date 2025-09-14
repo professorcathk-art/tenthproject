@@ -63,6 +63,8 @@ model User {
   receivedMessages Message[] @relation("MessageReceiver")
   notifications Notification[]
   wishlistItems WishlistItem[]
+  postViews     PostView[]
+  mentorSubscriptions MentorSubscription[]
 }
 
 model VerificationToken {
@@ -117,6 +119,11 @@ model MentorProfile {
   linkedin        String?
   github          String?
   portfolio       String?
+  twitter         String?  // X (formerly Twitter)
+  instagram       String?
+  
+  // Personal links
+  personalLinks   Json?    // Array of personal links with title and URL
   
   // Teaching preferences
   teachingMethods String[]
@@ -133,6 +140,50 @@ model MentorProfile {
   // Relations
   projects        Project[]
   reviews         Review[]
+  journalPosts    JournalPost[]
+  subscribers     MentorSubscription[]
+}
+
+model JournalPost {
+  id          String   @id @default(cuid())
+  mentorId    String
+  mentor      MentorProfile @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+  
+  title       String
+  content     String
+  excerpt     String?  // Short preview for non-subscribers
+  isPublic    Boolean  @default(false)  // Preview visible to all
+  attachments Json?    // Array of attachment URLs
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  views       PostView[]
+}
+
+model PostView {
+  id          String   @id @default(cuid())
+  postId      String
+  post        JournalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  viewedAt    DateTime @default(now())
+  
+  @@unique([postId, userId])
+}
+
+model MentorSubscription {
+  id          String   @id @default(cuid())
+  mentorId    String
+  mentor      MentorProfile @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+  studentId   String
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  subscribedAt DateTime @default(now())
+  isActive    Boolean  @default(true)
+  
+  @@unique([mentorId, studentId])
 }
 
 model Project {

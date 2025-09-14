@@ -37,6 +37,9 @@ export async function GET() {
       linkedin: user.mentorProfile.linkedin,
       github: user.mentorProfile.github,
       portfolio: user.mentorProfile.portfolio,
+      twitter: user.mentorProfile.twitter,
+      instagram: user.mentorProfile.instagram,
+      personalLinks: user.mentorProfile.personalLinks,
       teachingMethods: user.mentorProfile.teachingMethods
     }
 
@@ -84,6 +87,9 @@ export async function PATCH(request: NextRequest) {
       linkedin,
       github,
       portfolio,
+      twitter,
+      instagram,
+      personalLinks,
       teachingMethods
     } = await request.json()
 
@@ -100,6 +106,9 @@ export async function PATCH(request: NextRequest) {
         linkedin: linkedin || null,
         github: github || null,
         portfolio: portfolio || null,
+        twitter: twitter || null,
+        instagram: instagram || null,
+        personalLinks: personalLinks || null,
         teachingMethods: teachingMethods || []
       }
     })
@@ -116,6 +125,9 @@ export async function PATCH(request: NextRequest) {
         linkedin: updatedProfile.linkedin,
         github: updatedProfile.github,
         portfolio: updatedProfile.portfolio,
+        twitter: updatedProfile.twitter,
+        instagram: updatedProfile.instagram,
+        personalLinks: updatedProfile.personalLinks,
         teachingMethods: updatedProfile.teachingMethods
       }
     })

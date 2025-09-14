@@ -11,7 +11,8 @@ import {
   GlobeAltIcon,
   AcademicCapIcon,
   BriefcaseIcon,
-  ClockIcon
+  ClockIcon,
+  LinkIcon
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
 
@@ -32,6 +33,9 @@ interface Mentor {
   website?: string
   linkedin?: string
   github?: string
+  twitter?: string
+  instagram?: string
+  personalLinks?: Array<{title: string, url: string}>
   portfolio?: string
   teachingMethods: string[]
 }
@@ -309,7 +313,7 @@ export default function MentorProfilePage() {
                 </div>
 
                 {/* Social Links */}
-                {(mentor.website || mentor.linkedin || mentor.github || mentor.portfolio) && (
+                {(mentor.website || mentor.linkedin || mentor.github || mentor.portfolio || mentor.twitter || mentor.instagram) && (
                   <div className="mt-6 pt-6 border-t border-gray-200">
                     <h4 className="text-sm font-medium text-gray-900 mb-3">Connect</h4>
                     <div className="space-y-2">
@@ -357,6 +361,53 @@ export default function MentorProfilePage() {
                           Portfolio
                         </a>
                       )}
+                      {mentor.twitter && (
+                        <a
+                          href={mentor.twitter}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                          </svg>
+                          X (Twitter)
+                        </a>
+                      )}
+                      {mentor.instagram && (
+                        <a
+                          href={mentor.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <svg className="h-4 w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M12.017 0C8.396 0 7.989.013 6.756.072 5.526.131 4.742.333 4.041.63a5.917 5.917 0 00-2.125 1.386A5.917 5.917 0 00.63 4.041C.333 4.742.131 5.526.072 6.756.013 7.989 0 8.396 0 12.017c0 3.622.013 4.028.072 5.261.059 1.23.261 2.014.558 2.715a5.917 5.917 0 001.386 2.125 5.917 5.917 0 002.125 1.386c.701.297 1.485.499 2.715.558C7.989 23.987 8.396 24 12.017 24c3.622 0 4.028-.013 5.261-.072 1.23-.059 2.014-.261 2.715-.558a5.917 5.917 0 002.125-1.386 5.917 5.917 0 001.386-2.125c.297-.701.499-1.485.558-2.715.059-1.23.072-1.639.072-5.261 0-3.622-.013-4.028-.072-5.261-.059-1.23-.261-2.014-.558-2.715a5.917 5.917 0 00-1.386-2.125A5.917 5.917 0 0019.993.63c-.701-.297-1.485-.499-2.715-.558C15.045.013 14.639 0 12.017 0zm0 2.16c3.576 0 3.997.014 5.404.072 1.302.059 2.009.279 2.48.462.619.242 1.061.531 1.525.995.464.464.753.906.995 1.525.183.471.403 1.178.462 2.48.058 1.407.072 1.828.072 5.404 0 3.576-.014 3.997-.072 5.404-.059 1.302-.279 2.009-.462 2.48-.242.619-.531 1.061-.995 1.525-.464.464-.906.753-1.525.995-.471.183-1.178.403-2.48.462-1.407.058-1.828.072-5.404.072-3.576 0-3.997-.014-5.404-.072-1.302-.059-2.009-.279-2.48-.462a4.034 4.034 0 01-1.525-.995 4.034 4.034 0 01-.995-1.525c-.183-.471-.403-1.178-.462-2.48-.058-1.407-.072-1.828-.072-5.404 0-3.576.014-3.997.072-5.404.059-1.302.279-2.009.462-2.48.242-.619.531-1.061.995-1.525a4.034 4.034 0 011.525-.995c.471-.183 1.178-.403 2.48-.462C8.02 2.174 8.441 2.16 12.017 2.16zm0 5.838a4.002 4.002 0 100 8.004 4.002 4.002 0 000-8.004zm0 6.6a2.598 2.598 0 100-5.196 2.598 2.598 0 000 5.196zm5.602-6.6a.938.938 0 100 1.876.938.938 0 000-1.876z" clipRule="evenodd" />
+                          </svg>
+                          Instagram
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Personal Links */}
+                {mentor.personalLinks && mentor.personalLinks.length > 0 && (
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-900 mb-3">Personal Links</h4>
+                    <div className="space-y-2">
+                      {mentor.personalLinks.map((link, index) => (
+                        <a
+                          key={index}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <LinkIcon className="h-4 w-4 mr-2" />
+                          {link.title}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 )}

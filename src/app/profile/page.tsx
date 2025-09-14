@@ -17,6 +17,9 @@ interface MentorProfile {
   linkedin?: string
   github?: string
   portfolio?: string
+  twitter?: string
+  instagram?: string
+  personalLinks?: Array<{title: string, url: string}>
   teachingMethods: string[]
 }
 
@@ -88,6 +91,9 @@ export default function ProfilePage() {
         linkedin: formData.get('linkedin') as string,
         github: formData.get('github') as string,
         portfolio: formData.get('portfolio') as string,
+        twitter: formData.get('twitter') as string,
+        instagram: formData.get('instagram') as string,
+        personalLinks: JSON.parse(formData.get('personalLinks') as string || '[]'),
         teachingMethods: (formData.get('teachingMethods') as string).split(',').map(m => m.trim()).filter(m => m)
       }
 
@@ -389,6 +395,52 @@ export default function ProfilePage() {
                               disabled={!isEditing}
                             />
                           </div>
+                          <div>
+                            <label htmlFor="twitter" className="block text-sm font-medium text-gray-700">
+                              X (Twitter)
+                            </label>
+                            <input
+                              type="url"
+                              name="twitter"
+                              id="twitter"
+                              defaultValue={mentorProfile?.twitter || ''}
+                              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              placeholder="https://x.com/yourusername"
+                              disabled={!isEditing}
+                            />
+                          </div>
+                          <div>
+                            <label htmlFor="instagram" className="block text-sm font-medium text-gray-700">
+                              Instagram
+                            </label>
+                            <input
+                              type="url"
+                              name="instagram"
+                              id="instagram"
+                              defaultValue={mentorProfile?.instagram || ''}
+                              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                              placeholder="https://instagram.com/yourusername"
+                              disabled={!isEditing}
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label htmlFor="personalLinks" className="block text-sm font-medium text-gray-700">
+                            Personal Links
+                          </label>
+                          <textarea
+                            name="personalLinks"
+                            id="personalLinks"
+                            rows={4}
+                            defaultValue={JSON.stringify(mentorProfile?.personalLinks || [], null, 2)}
+                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder='[{"title": "My Blog", "url": "https://myblog.com"}, {"title": "YouTube Channel", "url": "https://youtube.com/@myusername"}]'
+                            disabled={!isEditing}
+                          />
+                          <p className="mt-1 text-sm text-gray-500">
+                            Add personal links as JSON array. Format: [{"{"}"title": "Link Name", "url": "https://example.com"{"}"}]
+                          </p>
                         </div>
                       </>
                     )}

@@ -9,8 +9,6 @@ import {
   EyeIcon,
   DocumentTextIcon,
   UserGroupIcon,
-  ShareIcon,
-  PencilIcon,
   TrashIcon,
   ArrowDownTrayIcon
 } from '@heroicons/react/24/outline'

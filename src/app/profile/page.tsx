@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Navigation from '@/components/navigation'
 import { UserIcon } from '@heroicons/react/24/outline'
 
@@ -154,9 +155,11 @@ export default function ProfilePage() {
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
                       {mentorProfile?.profileImage ? (
-                        <img
+                        <Image
                           src={mentorProfile.profileImage}
                           alt="Profile"
+                          width={64}
+                          height={64}
                           className="h-16 w-16 rounded-full object-cover"
                         />
                       ) : (
@@ -439,7 +442,7 @@ export default function ProfilePage() {
                             disabled={!isEditing}
                           />
                           <p className="mt-1 text-sm text-gray-500">
-                            Add personal links as JSON array. Format: [{"{"}"title": "Link Name", "url": "https://example.com"{"}"}]
+                            Add personal links as JSON array. Format: [{"{"}"title": &quot;Link Name&quot;, &quot;url&quot;: &quot;https://example.com&quot;{"}"}]
                           </p>
                         </div>
                       </>

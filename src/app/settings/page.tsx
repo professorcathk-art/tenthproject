@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Navigation from '@/components/navigation'
 import { 
-  CreditCardIcon, 
   BanknotesIcon, 
   CheckCircleIcon,
   ExclamationTriangleIcon,

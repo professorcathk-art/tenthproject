@@ -438,7 +438,7 @@ export default function ProfilePage() {
                             rows={4}
                             defaultValue={JSON.stringify(mentorProfile?.personalLinks || [], null, 2)}
                             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            placeholder='[{"title": "My Blog", "url": "https://myblog.com"}, {"title": "YouTube Channel", "url": "https://youtube.com/@myusername"}]'
+                            placeholder='[{&quot;title&quot;: &quot;My Blog&quot;, &quot;url&quot;: &quot;https://myblog.com&quot;}, {&quot;title&quot;: &quot;YouTube Channel&quot;, &quot;url&quot;: &quot;https://youtube.com/@myusername&quot;}]'
                             disabled={!isEditing}
                           />
                           <p className="mt-1 text-sm text-gray-500">

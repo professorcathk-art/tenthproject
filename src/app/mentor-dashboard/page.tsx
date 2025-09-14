@@ -12,7 +12,7 @@ import {
   ShareIcon,
   PencilIcon,
   TrashIcon,
-  DownloadIcon
+  ArrowDownTrayIcon
 } from '@heroicons/react/24/outline'
 
 interface JournalPost {
@@ -381,7 +381,7 @@ export default function MentorDashboard() {
                       onClick={exportSubscribers}
                       className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                     >
-                      <DownloadIcon className="h-4 w-4 mr-2" />
+                      <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
                       Export CSV
                     </button>
                   </div>

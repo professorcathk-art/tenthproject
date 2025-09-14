@@ -36,9 +36,9 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email }
     })
 
-    if (!user) {
+    if (!user || !user.password) {
       return NextResponse.json(
-        { message: 'User not found' },
+        { message: 'User not found or password not set' },
         { status: 404 }
       )
     }

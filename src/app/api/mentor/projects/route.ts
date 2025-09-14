@@ -61,7 +61,7 @@ export async function GET() {
       enrollments: project.enrollments.map(enrollment => ({
         id: enrollment.id,
         student: enrollment.student,
-        enrolledAt: enrollment.createdAt.toISOString()
+        enrolledAt: enrollment.enrolledAt.toISOString()
       }))
     }))
 

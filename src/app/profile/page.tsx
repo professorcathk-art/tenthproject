@@ -27,7 +27,7 @@ interface MentorProfile {
 export default function ProfilePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(true)
+  const [isEditing] = useState(true)
   const [mentorProfile, setMentorProfile] = useState<MentorProfile | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null)

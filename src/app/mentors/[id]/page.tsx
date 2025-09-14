@@ -104,10 +104,6 @@ export default function MentorProfilePage() {
     fetchMentorData()
   }, [params.id])
 
-  const toggleWishlist = () => {
-    setIsWishlisted(!isWishlisted)
-    // In real app, make API call to update wishlist
-  }
 
   const toggleSubscribe = async () => {
     try {

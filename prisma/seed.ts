@@ -36,7 +36,6 @@ async function main() {
       experience: '8+ years in software development',
       qualifications: ['Computer Science Degree', 'AWS Certified', 'Google Cloud Certified'],
       languages: ['English', 'Mandarin'],
-      hourlyRate: 75,
       isVerified: true,
       rating: 4.9,
       totalReviews: 234,
@@ -49,7 +48,6 @@ async function main() {
       experience: '6+ years in mobile development',
       qualifications: ['Computer Science Degree', 'React Native Certified'],
       languages: ['English'],
-      hourlyRate: 65,
       isVerified: true,
       rating: 4.8,
       totalReviews: 156,
@@ -62,7 +60,6 @@ async function main() {
       experience: '7+ years in data science',
       qualifications: ['Statistics PhD', 'Data Science Certification'],
       languages: ['English', 'Spanish'],
-      hourlyRate: 80,
       isVerified: true,
       rating: 4.7,
       totalReviews: 189,
@@ -75,7 +72,6 @@ async function main() {
       experience: '5+ years in design',
       qualifications: ['Design Degree', 'Google UX Certificate'],
       languages: ['English'],
-      hourlyRate: 70,
       isVerified: true,
       rating: 4.9,
       totalReviews: 167,
@@ -98,7 +94,6 @@ async function main() {
             experience: mentorData.experience,
             qualifications: mentorData.qualifications,
             languages: mentorData.languages,
-            hourlyRate: mentorData.hourlyRate,
             isVerified: mentorData.isVerified,
             rating: mentorData.rating,
             totalReviews: mentorData.totalReviews,
@@ -195,6 +190,7 @@ async function main() {
         'Deployment guide',
         'Monetization strategy document'
       ],
+      learningPurpose: 'MONETARIZE',
       mentorEmail: 'alex@example.com',
     },
     {
@@ -232,6 +228,7 @@ async function main() {
         'App store deployment',
         'Development documentation'
       ],
+      learningPurpose: 'CAREER',
       mentorEmail: 'sarah@example.com',
     },
     {
@@ -270,6 +267,7 @@ async function main() {
         'Analysis report',
         'Python scripts and notebooks'
       ],
+      learningPurpose: 'CAREER',
       mentorEmail: 'michael@example.com',
     },
     {
@@ -307,6 +305,7 @@ async function main() {
         'Prototype',
         'Design portfolio'
       ],
+      learningPurpose: 'LEISURE',
       mentorEmail: 'emma@example.com',
     },
   ]
@@ -321,6 +320,7 @@ async function main() {
           shortDescription: projectData.shortDescription,
           category: projectData.category as "TECHNOLOGY" | "BUSINESS" | "DESIGN" | "ACADEMIC" | "LANGUAGE" | "CREATIVE" | "OTHER",
           subcategory: projectData.subcategory,
+          learningPurpose: projectData.learningPurpose as "MONETARIZE" | "LEISURE" | "CAREER" | "ACADEMIC",
           difficulty: projectData.difficulty as "BEGINNER" | "INTERMEDIATE" | "ADVANCED",
           duration: projectData.duration,
           price: projectData.price,

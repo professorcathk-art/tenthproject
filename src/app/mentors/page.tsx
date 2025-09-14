@@ -129,11 +129,8 @@ export default function MentorsPage() {
       case 'students':
         filtered.sort((a, b) => b.totalStudents - a.totalStudents)
         break
-      case 'rate-low':
-        filtered.sort((a, b) => a.hourlyRate - b.hourlyRate)
-        break
-      case 'rate-high':
-        filtered.sort((a, b) => b.hourlyRate - a.hourlyRate)
+      case 'projects':
+        filtered.sort((a, b) => b.projectsCount - a.projectsCount)
         break
     }
 
@@ -205,8 +202,7 @@ export default function MentorsPage() {
                   <option value="rating">Highest Rated</option>
                   <option value="reviews">Most Reviews</option>
                   <option value="students">Most Students</option>
-                  <option value="rate-low">Rate: Low to High</option>
-                  <option value="rate-high">Rate: High to Low</option>
+                  <option value="projects">Most Projects</option>
                 </select>
               </div>
             </div>
@@ -282,14 +278,14 @@ export default function MentorsPage() {
                     <span>{mentor.languages.join(', ')}</span>
                   </div>
 
-                  {/* Rate */}
+                  {/* Experience */}
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <div className="text-sm text-gray-500">Hourly Rate</div>
-                      <div className="text-lg font-bold text-gray-900">${mentor.hourlyRate}</div>
+                      <div className="text-sm text-gray-500">Experience</div>
+                      <div className="text-lg font-bold text-gray-900">{mentor.experience}</div>
                     </div>
                     <div className="text-sm text-gray-500">
-                      {mentor.experience}
+                      Project-based mentoring
                     </div>
                   </div>
 

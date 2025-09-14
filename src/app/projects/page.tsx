@@ -47,11 +47,23 @@ const categories = [
 
 const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
+const learningPurposes = [
+  'All',
+  'Career Development',
+  'Skill Building',
+  'Portfolio Project',
+  'Academic Study',
+  'Personal Interest',
+  'Entrepreneurship',
+  'Professional Certification'
+]
+
 function ProjectsContent() {
   const searchParams = useSearchParams()
   const [projects, setProjects] = useState<Project[]>([])
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedLearningPurpose, setSelectedLearningPurpose] = useState('All')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [selectedDifficulty, setSelectedDifficulty] = useState('All')
   const [sortBy, setSortBy] = useState('popular')
@@ -134,6 +146,11 @@ function ProjectsContent() {
       )
     }
 
+    // Learning Purpose filter (placeholder - will be implemented when database field is added)
+    // if (selectedLearningPurpose !== 'All') {
+    //   filtered = filtered.filter(project => project.learningPurpose === selectedLearningPurpose)
+    // }
+
     // Category filter
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(project => project.category === selectedCategory)
@@ -164,7 +181,7 @@ function ProjectsContent() {
     }
 
     setFilteredProjects(filtered)
-  }, [projects, searchTerm, selectedCategory, selectedDifficulty, sortBy])
+  }, [projects, searchTerm, selectedLearningPurpose, selectedCategory, selectedDifficulty, sortBy])
 
   const toggleWishlist = (projectId: string) => {
     setProjects(prev => prev.map(project => 
@@ -201,7 +218,7 @@ function ProjectsContent() {
 
           {/* Search and Filters */}
           <div className="bg-white shadow rounded-lg p-6 mb-8">
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
               {/* Search */}
               <div className="lg:col-span-2">
                 <div className="relative">
@@ -214,6 +231,19 @@ function ProjectsContent() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
+              </div>
+
+              {/* Learning Purpose Filter */}
+              <div>
+                <select
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                  value={selectedLearningPurpose}
+                  onChange={(e) => setSelectedLearningPurpose(e.target.value)}
+                >
+                  {learningPurposes.map(purpose => (
+                    <option key={purpose} value={purpose}>{purpose}</option>
+                  ))}
+                </select>
               </div>
 
               {/* Category Filter */}
@@ -370,6 +400,7 @@ function ProjectsContent() {
                 <button
                   onClick={() => {
                     setSearchTerm('')
+                    setSelectedLearningPurpose('All')
                     setSelectedCategory('All')
                     setSelectedDifficulty('All')
                   }}

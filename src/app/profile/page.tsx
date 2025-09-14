@@ -442,7 +442,7 @@ export default function ProfilePage() {
                             disabled={!isEditing}
                           />
                           <p className="mt-1 text-sm text-gray-500">
-                            Add personal links as JSON array. Format: [{"{"}"title": &quot;Link Name&quot;, &quot;url&quot;: &quot;https://example.com&quot;{"}"}]
+                            Add personal links as JSON array. Format: [&#123;&quot;title&quot;: &quot;Link Name&quot;, &quot;url&quot;: &quot;https://example.com&quot;&#125;]
                           </p>
                         </div>
                       </>

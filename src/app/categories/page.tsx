@@ -120,9 +120,12 @@ export default function CategoriesPage() {
                     <span>{area.mentors} Mentors</span>
                   </div>
                   
-                  <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+                  <Link 
+                    href={`/projects?category=${encodeURIComponent(area.name)}`}
+                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors text-center block"
+                  >
                     Explore {area.name}
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}

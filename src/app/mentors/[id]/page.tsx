@@ -1,0 +1,372 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import Navigation from '@/components/navigation'
+import { 
+  HeartIcon,
+  StarIcon,
+  CheckCircleIcon,
+  ChatBubbleLeftRightIcon,
+  GlobeAltIcon,
+  AcademicCapIcon,
+  BriefcaseIcon,
+  ClockIcon
+} from '@heroicons/react/24/outline'
+import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
+
+interface Mentor {
+  id: string
+  user: {
+    name: string
+    email: string
+  }
+  bio: string
+  specialties: string[]
+  experience: string
+  qualifications: string[]
+  languages: string[]
+  hourlyRate: number
+  isVerified: boolean
+  rating: number
+  totalReviews: number
+  website?: string
+  linkedin?: string
+  github?: string
+  portfolio?: string
+  teachingMethods: string[]
+}
+
+interface Project {
+  id: string
+  title: string
+  description: string
+  category: string
+  difficulty: string
+  duration: number
+  price: number
+  rating: number
+  totalReviews: number
+}
+
+export default function MentorProfilePage() {
+  const params = useParams()
+  const [mentor, setMentor] = useState<Mentor | null>(null)
+  const [projects, setProjects] = useState<Project[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isWishlisted, setIsWishlisted] = useState(false)
+
+  useEffect(() => {
+    const fetchMentor = async () => {
+      try {
+        const response = await fetch(`/api/mentors/${params.id}`)
+        if (response.ok) {
+          const data = await response.json()
+          setMentor(data.mentor)
+          setProjects(data.projects || [])
+          setIsWishlisted(data.isWishlisted || false)
+        } else if (response.status === 404) {
+          setMentor(null)
+        } else {
+          console.error('Failed to fetch mentor')
+        }
+      } catch (error) {
+        console.error('Error fetching mentor:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchMentor()
+  }, [params.id])
+
+  const toggleWishlist = () => {
+    setIsWishlisted(!isWishlisted)
+    // In real app, make API call to update wishlist
+  }
+
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <div className="flex items-center justify-center h-96">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!mentor) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-gray-900">Mentor not found</h1>
+            <Link href="/mentors" className="text-indigo-600 hover:text-indigo-500">
+              Browse all mentors
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navigation />
+      
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div className="px-4 py-6 sm:px-0">
+          {/* Breadcrumb */}
+          <nav className="flex mb-8" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-4">
+              <li>
+                <Link href="/mentors" className="text-gray-500 hover:text-gray-700">
+                  Mentors
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="text-gray-400">/</span>
+                  <span className="ml-4 text-gray-900 font-medium">{mentor.user.name}</span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Mentor Header */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="h-20 w-20 rounded-full bg-indigo-100 flex items-center justify-center">
+                      <span className="text-2xl font-medium text-indigo-600">
+                        {mentor.user.name.split(' ').map(n => n[0]).join('')}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <h1 className="text-3xl font-bold text-gray-900">{mentor.user.name}</h1>
+                        {mentor.isVerified && (
+                          <CheckCircleIcon className="h-6 w-6 text-blue-500" />
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                        <div className="flex items-center">
+                          <StarIcon className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                          <span className="font-medium text-gray-900">{mentor.rating.toFixed(1)}</span>
+                          <span className="ml-1">({mentor.totalReviews} reviews)</span>
+                        </div>
+                        <div className="flex items-center">
+                          <AcademicCapIcon className="h-4 w-4 mr-1" />
+                          {mentor.experience}
+                        </div>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed">{mentor.bio}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={toggleWishlist}
+                    className="flex-shrink-0 p-2 rounded-full hover:bg-gray-100"
+                  >
+                    {isWishlisted ? (
+                      <HeartSolidIcon className="h-6 w-6 text-red-500" />
+                    ) : (
+                      <HeartIcon className="h-6 w-6 text-gray-400 hover:text-red-500" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Specialties */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-3">Specialties</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {mentor.specialties.map((specialty, index) => (
+                      <span
+                        key={index}
+                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800"
+                      >
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Qualifications */}
+                {mentor.qualifications && mentor.qualifications.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Qualifications</h3>
+                    <ul className="space-y-2">
+                      {mentor.qualifications.map((qualification, index) => (
+                        <li key={index} className="flex items-start">
+                          <CheckCircleIcon className="h-5 w-5 text-green-500 mt-0.5 mr-3 flex-shrink-0" />
+                          <span className="text-gray-700">{qualification}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Teaching Methods */}
+                {mentor.teachingMethods && mentor.teachingMethods.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Teaching Methods</h3>
+                    <ul className="space-y-2">
+                      {mentor.teachingMethods.map((method, index) => (
+                        <li key={index} className="flex items-start">
+                          <div className="h-2 w-2 bg-indigo-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                          <span className="text-gray-700">{method}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Languages */}
+                <div className="flex items-center text-sm text-gray-500">
+                  <GlobeAltIcon className="h-4 w-4 mr-1" />
+                  <span>Languages: {mentor.languages.join(', ')}</span>
+                </div>
+              </div>
+
+              {/* Projects */}
+              {projects.length > 0 && (
+                <div className="bg-white rounded-lg shadow p-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Available Projects</h2>
+                  <div className="grid grid-cols-1 gap-4">
+                    {projects.map((project) => (
+                      <Link
+                        key={project.id}
+                        href={`/projects/${project.id}`}
+                        className="block p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-md transition-all"
+                      >
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">{project.title}</h3>
+                            <p className="text-gray-600 text-sm mb-3 line-clamp-2">{project.description}</p>
+                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {project.category}
+                              </span>
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {project.difficulty}
+                              </span>
+                              <div className="flex items-center">
+                                <ClockIcon className="h-4 w-4 mr-1" />
+                                {project.duration} weeks
+                              </div>
+                              <div className="flex items-center">
+                                <StarIcon className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                                {project.rating.toFixed(1)} ({project.totalReviews})
+                              </div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-bold text-gray-900">${project.price}</div>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Contact Card */}
+              <div className="bg-white rounded-lg shadow p-6 sticky top-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact & Pricing</h3>
+                
+                <div className="text-center mb-6">
+                  <div className="text-3xl font-bold text-gray-900 mb-2">
+                    ${mentor.hourlyRate}
+                  </div>
+                  <div className="text-gray-500">per hour</div>
+                </div>
+
+
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
+                    <span>Verified mentor</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
+                    <span>Quick response time</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
+                    <span>1-on-1 mentoring</span>
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircleIcon className="h-4 w-4 text-green-500 mr-2" />
+                    <span>Project-based learning</span>
+                  </div>
+                </div>
+
+                {/* Social Links */}
+                {(mentor.website || mentor.linkedin || mentor.github || mentor.portfolio) && (
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-900 mb-3">Connect</h4>
+                    <div className="space-y-2">
+                      {mentor.website && (
+                        <a
+                          href={mentor.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <GlobeAltIcon className="h-4 w-4 mr-2" />
+                          Website
+                        </a>
+                      )}
+                      {mentor.linkedin && (
+                        <a
+                          href={mentor.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <BriefcaseIcon className="h-4 w-4 mr-2" />
+                          LinkedIn
+                        </a>
+                      )}
+                      {mentor.github && (
+                        <a
+                          href={mentor.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <AcademicCapIcon className="h-4 w-4 mr-2" />
+                          GitHub
+                        </a>
+                      )}
+                      {mentor.portfolio && (
+                        <a
+                          href={mentor.portfolio}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-sm text-indigo-600 hover:text-indigo-500"
+                        >
+                          <BriefcaseIcon className="h-4 w-4 mr-2" />
+                          Portfolio
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

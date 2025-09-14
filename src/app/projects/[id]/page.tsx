@@ -40,6 +40,8 @@ interface Project {
   }
   rating: number
   totalReviews: number
+  maxStudents: number
+  currentStudents: number
   isWishlisted?: boolean
 }
 
@@ -50,70 +52,26 @@ export default function ProjectDetailPage() {
   const [isWishlisted, setIsWishlisted] = useState(false)
 
   useEffect(() => {
-    // Mock data - in real app, fetch from API
-    const mockProject: Project = {
-      id: params.id as string,
-      title: 'AI Website Development & Monetization',
-      description: 'Learn to build and monetize AI-powered websites from scratch. This comprehensive project covers frontend development with React, AI integration using OpenAI APIs, backend development with Node.js, and business strategies for monetization. You&apos;ll build a complete SaaS application and learn how to deploy it to production. Throughout this project, you&apos;ll work on real-world scenarios and build a portfolio-worthy application that you can actually monetize.',
-      shortDescription: 'Build and monetize AI-powered websites from scratch',
-      category: 'Technology',
-      difficulty: 'Intermediate',
-      duration: 8,
-      price: 299,
-      currency: 'USD',
-      objectives: [
-        'Build a responsive React frontend with modern UI components',
-        'Integrate AI APIs (OpenAI, Anthropic) for intelligent functionality',
-        'Create a robust Node.js backend with Express and MongoDB',
-        'Implement secure user authentication and authorization',
-        'Deploy the application to production using Vercel and MongoDB Atlas',
-        'Learn proven monetization strategies for SaaS applications',
-        'Set up payment processing with Stripe',
-        'Implement analytics and user tracking'
-      ],
-      prerequisites: [
-        'Basic JavaScript knowledge (ES6+)',
-        'Understanding of React fundamentals (components, state, props)',
-        'Basic HTML/CSS skills',
-        'Familiarity with Git version control',
-        'Basic understanding of APIs and HTTP requests'
-      ],
-      tools: [
-        'React 18 with TypeScript',
-        'Node.js and Express.js',
-        'MongoDB and Mongoose',
-        'OpenAI API and Anthropic Claude',
-        'Stripe for payments',
-        'Vercel for deployment',
-        'Tailwind CSS for styling',
-        'Next.js for full-stack development'
-      ],
-      deliverables: [
-        'Complete AI-powered website with full functionality',
-        'Source code repository with proper documentation',
-        'Step-by-step deployment guide',
-        'Comprehensive monetization strategy document',
-        'Live demo of your deployed application',
-        'Certificate of completion',
-        'Portfolio-ready project showcase'
-      ],
-      mentor: {
-        name: 'Alex Chen',
-        bio: 'Full-stack developer with 8+ years of experience in AI and web development. I\'ve built and scaled multiple SaaS applications and love teaching others how to do the same. My students have gone on to build successful businesses using the skills they learned.',
-        rating: 4.9,
-        totalReviews: 234,
-        specialties: ['AI Development', 'Web Development', 'JavaScript', 'Python', 'SaaS'],
-        experience: '8+ years in software development',
-        isVerified: true
-      },
-      rating: 4.9,
-      totalReviews: 127,
-      isWishlisted: false
+    const fetchProject = async () => {
+      try {
+        const response = await fetch(`/api/projects/${params.id}`)
+        if (response.ok) {
+          const data = await response.json()
+          setProject(data.project)
+          setIsWishlisted(data.project.isWishlisted || false)
+        } else if (response.status === 404) {
+          setProject(null)
+        } else {
+          console.error('Failed to fetch project')
+        }
+      } catch (error) {
+        console.error('Error fetching project:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    setProject(mockProject)
-    setIsWishlisted(mockProject.isWishlisted || false)
-    setIsLoading(false)
+    fetchProject()
   }, [params.id])
 
   const toggleWishlist = () => {

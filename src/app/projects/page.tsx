@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import Navigation from '@/components/navigation'
 import SuggestCategoryModal from '@/components/SuggestCategoryModal'
 import { 
@@ -47,6 +48,7 @@ const categories = [
 const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
 export default function ProjectsPage() {
+  const searchParams = useSearchParams()
   const [projects, setProjects] = useState<Project[]>([])
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -55,6 +57,14 @@ export default function ProjectsPage() {
   const [sortBy, setSortBy] = useState('popular')
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Set initial category from URL params
+  useEffect(() => {
+    const categoryParam = searchParams.get('category')
+    if (categoryParam && categories.includes(categoryParam)) {
+      setSelectedCategory(categoryParam)
+    }
+  }, [searchParams])
 
   // Fetch real projects from database
   useEffect(() => {

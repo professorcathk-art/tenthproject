@@ -8,7 +8,6 @@ import {
   MagnifyingGlassIcon,
   StarIcon,
   CheckCircleIcon,
-  ChatBubbleLeftRightIcon,
   AcademicCapIcon,
   GlobeAltIcon
 } from '@heroicons/react/24/outline'
@@ -305,10 +304,6 @@ export default function MentorsPage() {
                     >
                       View Profile
                     </Link>
-                    <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                      <ChatBubbleLeftRightIcon className="h-4 w-4 mr-2" />
-                      Message
-                    </button>
                   </div>
                 </div>
               </div>

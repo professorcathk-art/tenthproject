@@ -26,7 +26,6 @@ interface Mentor {
   experience: string
   qualifications: string[]
   languages: string[]
-  hourlyRate: number
   isVerified: boolean
   rating: number
   totalReviews: number
@@ -283,10 +282,10 @@ export default function MentorProfilePage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact & Pricing</h3>
                 
                 <div className="text-center mb-6">
-                  <div className="text-3xl font-bold text-gray-900 mb-2">
-                    ${mentor.hourlyRate}
+                  <div className="text-lg font-semibold text-gray-900 mb-2">
+                    Project-Based Mentoring
                   </div>
-                  <div className="text-gray-500">per hour</div>
+                  <div className="text-gray-500">Fixed project pricing</div>
                 </div>
 
 

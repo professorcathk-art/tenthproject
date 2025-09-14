@@ -73,7 +73,6 @@ export async function GET(
       experience: mentor.experience || 'Experience not specified',
       qualifications: mentor.qualifications,
       languages: mentor.languages,
-      hourlyRate: mentor.hourlyRate || 0,
       isVerified: mentor.isVerified,
       rating: mentor.rating,
       totalReviews: mentor.totalReviews,

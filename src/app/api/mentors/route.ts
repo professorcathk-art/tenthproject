@@ -55,7 +55,6 @@ export async function GET() {
         totalReviews: mentor.reviews.length,
         isVerified: mentor.isVerified,
         languages: mentor.languages,
-        hourlyRate: mentor.hourlyRate,
         totalStudents: mentor.totalReviews, // Using totalReviews as proxy for total students
         projectsCount
       }

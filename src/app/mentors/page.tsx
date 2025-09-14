@@ -22,7 +22,6 @@ interface Mentor {
   totalReviews: number
   isVerified: boolean
   languages: string[]
-  hourlyRate: number
   totalStudents: number
   projectsCount: number
 }
@@ -67,7 +66,6 @@ export default function MentorsPage() {
             totalReviews: number;
             isVerified: boolean;
             languages: string[];
-            hourlyRate?: number;
             totalStudents: number;
             projectsCount: number;
           }) => ({
@@ -80,7 +78,6 @@ export default function MentorsPage() {
             totalReviews: mentor.totalReviews || 0,
             isVerified: mentor.isVerified || false,
             languages: mentor.languages || ['English'],
-            hourlyRate: mentor.hourlyRate || 50,
             totalStudents: mentor.totalStudents || 0,
             projectsCount: mentor.projectsCount || 0
           }))

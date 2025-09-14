@@ -197,6 +197,7 @@ model Project {
   category        ProjectCategory
   subcategory     String?
   purposes        ProjectPurpose[]
+  learningPurpose ProjectPurpose?
   difficulty      DifficultyLevel
   duration        Int           // in weeks
   price           Float

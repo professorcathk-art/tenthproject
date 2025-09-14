@@ -26,6 +26,7 @@ interface Project {
   currency: string
   rating: number
   totalReviews: number
+  learningPurpose?: string
   mentor: {
     name: string
     rating: number
@@ -49,13 +50,10 @@ const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
 const learningPurposes = [
   'All',
-  'Career Development',
-  'Skill Building',
-  'Portfolio Project',
-  'Academic Study',
-  'Personal Interest',
-  'Entrepreneurship',
-  'Professional Certification'
+  'Monetarize',
+  'Leisure',
+  'Career',
+  'Academic'
 ]
 
 function ProjectsContent() {
@@ -95,6 +93,7 @@ function ProjectsContent() {
             duration: number;
             price: number;
             currency: string;
+            learningPurpose?: string;
             mentor: {
               rating?: number;
               totalReviews?: number;
@@ -111,6 +110,7 @@ function ProjectsContent() {
             currency: project.currency,
             rating: project.mentor.rating || 4.5,
             totalReviews: project.mentor.totalReviews || 0,
+            learningPurpose: project.learningPurpose,
             mentor: {
               name: project.mentor.user.name || 'Anonymous',
               rating: project.mentor.rating || 4.5,
@@ -146,10 +146,10 @@ function ProjectsContent() {
       )
     }
 
-    // Learning Purpose filter (placeholder - will be implemented when database field is added)
-    // if (selectedLearningPurpose !== 'All') {
-    //   filtered = filtered.filter(project => project.learningPurpose === selectedLearningPurpose)
-    // }
+    // Learning Purpose filter
+    if (selectedLearningPurpose !== 'All') {
+      filtered = filtered.filter(project => project.learningPurpose === selectedLearningPurpose)
+    }
 
     // Category filter
     if (selectedCategory !== 'All') {

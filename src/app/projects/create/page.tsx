@@ -15,6 +15,7 @@ export default function CreateProjectPage() {
     shortDescription: '',
     category: 'TECHNOLOGY',
     purposes: [] as string[],
+    learningPurpose: '',
     difficulty: 'BEGINNER',
     duration: 4,
     price: 0,
@@ -103,6 +104,12 @@ export default function CreateProjectPage() {
     // Validate purposes
     if (formData.purposes.length === 0) {
       alert('Please select at least one purpose')
+      return
+    }
+
+    // Validate learning purpose
+    if (!formData.learningPurpose) {
+      alert('Please select a learning purpose')
       return
     }
 
@@ -263,6 +270,26 @@ export default function CreateProjectPage() {
                         </label>
                       ))}
                     </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="learningPurpose" className="block text-sm font-medium text-gray-700">
+                      Learning Purpose * (Primary focus for students)
+                    </label>
+                    <select
+                      name="learningPurpose"
+                      id="learningPurpose"
+                      required
+                      value={formData.learningPurpose}
+                      onChange={handleInputChange}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                      <option value="">Select learning purpose</option>
+                      <option value="MONETARIZE">Monetarize</option>
+                      <option value="LEISURE">Leisure</option>
+                      <option value="CAREER">Career</option>
+                      <option value="ACADEMIC">Academic</option>
+                    </select>
                   </div>
                 </div>
               </div>

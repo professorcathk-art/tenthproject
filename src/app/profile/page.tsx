@@ -27,9 +27,10 @@ interface MentorProfile {
 export default function ProfilePage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(true)
   const [mentorProfile, setMentorProfile] = useState<MentorProfile | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null)
 
   useEffect(() => {
     if (status === 'loading') return
@@ -58,6 +59,7 @@ export default function ProfilePage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
+    setMessage(null)
     
     try {
       const formData = new FormData(e.currentTarget)
@@ -78,16 +80,20 @@ export default function ProfilePage() {
         if (uploadResponse.ok) {
           const uploadResult = await uploadResponse.json()
           profileImageUrl = uploadResult.imageUrl
+        } else {
+          const errorResult = await uploadResponse.json()
+          setMessage({type: 'error', text: `Image upload failed: ${errorResult.message}`})
+          return
         }
       }
       
       const data = {
         bio: formData.get('bio') as string,
         profileImage: profileImageUrl,
-        specialties: (formData.get('specialties') as string).split(',').map(s => s.trim()).filter(s => s),
+        specialties: (formData.get('specialties') as string || '').split(',').map(s => s.trim()).filter(s => s),
         experience: formData.get('experience') as string,
-        qualifications: (formData.get('qualifications') as string).split(',').map(q => q.trim()).filter(q => q),
-        languages: (formData.get('languages') as string).split(',').map(l => l.trim()).filter(l => l),
+        qualifications: (formData.get('qualifications') as string || '').split(',').map(q => q.trim()).filter(q => q),
+        languages: (formData.get('languages') as string || '').split(',').map(l => l.trim()).filter(l => l),
         website: formData.get('website') as string,
         linkedin: formData.get('linkedin') as string,
         github: formData.get('github') as string,
@@ -95,7 +101,7 @@ export default function ProfilePage() {
         twitter: formData.get('twitter') as string,
         instagram: formData.get('instagram') as string,
         personalLinks: JSON.parse(formData.get('personalLinks') as string || '[]'),
-        teachingMethods: (formData.get('teachingMethods') as string).split(',').map(m => m.trim()).filter(m => m)
+        teachingMethods: (formData.get('teachingMethods') as string || '').split(',').map(m => m.trim()).filter(m => m)
       }
 
       const response = await fetch('/api/profile/mentor', {
@@ -108,10 +114,15 @@ export default function ProfilePage() {
 
       if (response.ok) {
         setMentorProfile(data)
-        setIsEditing(false)
+        setMessage({type: 'success', text: 'Profile updated successfully!'})
+        // Keep editing mode open so user can continue editing
+      } else {
+        const errorResult = await response.json()
+        setMessage({type: 'error', text: `Failed to update profile: ${errorResult.message}`})
       }
     } catch (error) {
       console.error('Error updating profile:', error)
+      setMessage({type: 'error', text: 'An unexpected error occurred. Please try again.'})
     } finally {
       setIsLoading(false)
     }
@@ -195,6 +206,16 @@ export default function ProfilePage() {
                   <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                     Personal Information
                   </h3>
+                  
+                  {message && (
+                    <div className={`mb-4 p-4 rounded-md ${
+                      message.type === 'success' 
+                        ? 'bg-green-50 text-green-800 border border-green-200' 
+                        : 'bg-red-50 text-red-800 border border-red-200'
+                    }`}>
+                      {message.text}
+                    </div>
+                  )}
                   
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -449,32 +470,13 @@ export default function ProfilePage() {
                     )}
 
                     <div className="flex justify-end space-x-3">
-                      {isEditing ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => setIsEditing(false)}
-                            className="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            disabled={isLoading}
-                            className="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
-                          >
-                            {isLoading ? 'Saving...' : 'Save Changes'}
-                          </button>
-                        </>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => setIsEditing(true)}
-                          className="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700"
-                        >
-                          Edit Profile
-                        </button>
-                      )}
+                      <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+                      >
+                        {isLoading ? 'Saving...' : 'Save Changes'}
+                      </button>
                     </div>
                   </form>
                 </div>

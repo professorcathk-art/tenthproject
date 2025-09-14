@@ -39,6 +39,8 @@ export default function MentorDashboard() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showCreatePost, setShowCreatePost] = useState(false)
+  const [isCreatingPost, setIsCreatingPost] = useState(false)
+  const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null)
   const [newPost, setNewPost] = useState({
     title: '',
     content: '',
@@ -80,6 +82,9 @@ export default function MentorDashboard() {
 
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsCreatingPost(true)
+    setMessage(null)
+    
     try {
       const response = await fetch('/api/mentor/journal-posts', {
         method: 'POST',
@@ -92,10 +97,17 @@ export default function MentorDashboard() {
       if (response.ok) {
         setNewPost({ title: '', content: '', excerpt: '', isPublic: false })
         setShowCreatePost(false)
+        setMessage({type: 'success', text: 'Post created successfully!'})
         fetchDashboardData()
+      } else {
+        const errorData = await response.json()
+        setMessage({type: 'error', text: `Failed to create post: ${errorData.message}`})
       }
     } catch (error) {
       console.error('Error creating post:', error)
+      setMessage({type: 'error', text: 'An unexpected error occurred. Please try again.'})
+    } finally {
+      setIsCreatingPost(false)
     }
   }
 
@@ -254,13 +266,26 @@ export default function MentorDashboard() {
                   <div className="flex justify-between items-center mb-6">
                     <h3 className="text-lg font-medium text-gray-900">Journal Posts</h3>
                     <button
-                      onClick={() => setShowCreatePost(true)}
-                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+                      onClick={() => {
+                        console.log('Create Post button clicked')
+                        setShowCreatePost(true)
+                      }}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer"
                     >
                       <PlusIcon className="h-4 w-4 mr-2" />
                       Create Post
                     </button>
                   </div>
+
+                  {message && (
+                    <div className={`mb-6 p-4 rounded-md ${
+                      message.type === 'success' 
+                        ? 'bg-green-50 text-green-800 border border-green-200' 
+                        : 'bg-red-50 text-red-800 border border-red-200'
+                    }`}>
+                      {message.text}
+                    </div>
+                  )}
 
                   {showCreatePost && (
                     <div className="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
@@ -327,9 +352,10 @@ export default function MentorDashboard() {
                           </button>
                           <button
                             type="submit"
-                            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                            disabled={isCreatingPost}
+                            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            Create Post
+                            {isCreatingPost ? 'Creating...' : 'Create Post'}
                           </button>
                         </div>
                       </form>

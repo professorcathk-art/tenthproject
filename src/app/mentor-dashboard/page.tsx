@@ -31,12 +31,36 @@ interface Subscriber {
   subscribedAt: string
 }
 
+interface Project {
+  id: string
+  title: string
+  description: string
+  category: string
+  difficulty: string
+  duration: number
+  price: number
+  learningPurpose?: string
+  isActive: boolean
+  currentStudents: number
+  maxStudents: number
+  createdAt: string
+  enrollments: Array<{
+    id: string
+    student: {
+      name: string
+      email: string
+    }
+    enrolledAt: string
+  }>
+}
+
 export default function MentorDashboard() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<'posts' | 'subscribers'>('posts')
+  const [activeTab, setActiveTab] = useState<'posts' | 'subscribers' | 'projects'>('posts')
   const [posts, setPosts] = useState<JournalPost[]>([])
   const [subscribers, setSubscribers] = useState<Subscriber[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showCreatePost, setShowCreatePost] = useState(false)
   const [isCreatingPost, setIsCreatingPost] = useState(false)
@@ -59,9 +83,10 @@ export default function MentorDashboard() {
 
   const fetchDashboardData = async () => {
     try {
-      const [postsResponse, subscribersResponse] = await Promise.all([
+      const [postsResponse, subscribersResponse, projectsResponse] = await Promise.all([
         fetch('/api/mentor/journal-posts'),
-        fetch('/api/mentor/subscribers')
+        fetch('/api/mentor/subscribers'),
+        fetch('/api/mentor/projects')
       ])
       
       if (postsResponse.ok) {
@@ -72,6 +97,11 @@ export default function MentorDashboard() {
       if (subscribersResponse.ok) {
         const subscribersData = await subscribersResponse.json()
         setSubscribers(subscribersData.subscribers)
+      }
+
+      if (projectsResponse.ok) {
+        const projectsData = await projectsResponse.json()
+        setProjects(projectsData.projects)
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error)
@@ -256,6 +286,16 @@ export default function MentorDashboard() {
                   }`}
                 >
                   Subscribers
+                </button>
+                <button
+                  onClick={() => setActiveTab('projects')}
+                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'projects'
+                      ? 'border-indigo-500 text-indigo-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  Projects
                 </button>
               </nav>
             </div>
@@ -442,6 +482,104 @@ export default function MentorDashboard() {
                       </tbody>
                     </table>
                   </div>
+                </div>
+              )}
+
+              {activeTab === 'projects' && (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-lg font-medium text-gray-900">Your Projects</h2>
+                    <button
+                      onClick={() => router.push('/projects/create')}
+                      className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      <PlusIcon className="h-4 w-4 mr-2" />
+                      Create New Project
+                    </button>
+                  </div>
+
+                  {projects.length === 0 ? (
+                    <div className="text-center py-12">
+                      <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
+                      <h3 className="mt-2 text-sm font-medium text-gray-900">No projects yet</h3>
+                      <p className="mt-1 text-sm text-gray-500">Get started by creating your first project.</p>
+                      <div className="mt-6">
+                        <button
+                          onClick={() => router.push('/projects/create')}
+                          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                        >
+                          <PlusIcon className="h-4 w-4 mr-2" />
+                          Create Project
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {projects.map((project) => (
+                        <div key={project.id} className="border border-gray-200 rounded-lg p-6">
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="flex-1">
+                              <h3 className="text-lg font-medium text-gray-900">{project.title}</h3>
+                              <p className="text-sm text-gray-600 mt-1">{project.description}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                project.isActive 
+                                  ? 'bg-green-100 text-green-800' 
+                                  : 'bg-red-100 text-red-800'
+                              }`}>
+                                {project.isActive ? 'Active' : 'Inactive'}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                            <div>
+                              <span className="text-sm font-medium text-gray-500">Category</span>
+                              <p className="text-sm text-gray-900">{project.category}</p>
+                            </div>
+                            <div>
+                              <span className="text-sm font-medium text-gray-500">Difficulty</span>
+                              <p className="text-sm text-gray-900">{project.difficulty}</p>
+                            </div>
+                            <div>
+                              <span className="text-sm font-medium text-gray-500">Price</span>
+                              <p className="text-sm text-gray-900">${project.price} USD</p>
+                            </div>
+                            <div>
+                              <span className="text-sm font-medium text-gray-500">Duration</span>
+                              <p className="text-sm text-gray-900">{project.duration} weeks</p>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center space-x-4">
+                              <span className="text-sm text-gray-500">
+                                {project.currentStudents} / {project.maxStudents} students
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                {project.enrollments.length} enrollments
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <button
+                                onClick={() => router.push(`/projects/${project.id}/edit`)}
+                                className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={() => router.push(`/mentor-dashboard/projects/${project.id}/enrollments`)}
+                                className="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+                              >
+                                View Enrollments
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

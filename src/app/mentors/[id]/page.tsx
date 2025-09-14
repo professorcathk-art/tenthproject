@@ -52,40 +52,79 @@ interface Project {
   totalReviews: number
 }
 
+interface JournalPost {
+  id: string
+  title: string
+  content: string
+  excerpt?: string
+  isPublic: boolean
+  createdAt: string
+  views: number
+}
+
 export default function MentorProfilePage() {
   const params = useParams()
   const [mentor, setMentor] = useState<Mentor | null>(null)
   const [projects, setProjects] = useState<Project[]>([])
+  const [journalPosts, setJournalPosts] = useState<JournalPost[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const [isSubscribed, setIsSubscribed] = useState(false)
 
   useEffect(() => {
-    const fetchMentor = async () => {
+    const fetchMentorData = async () => {
       try {
-        const response = await fetch(`/api/mentors/${params.id}`)
-        if (response.ok) {
-          const data = await response.json()
-          setMentor(data.mentor)
-          setProjects(data.projects || [])
-          setIsWishlisted(data.isWishlisted || false)
-        } else if (response.status === 404) {
+        // Fetch mentor info and projects
+        const mentorResponse = await fetch(`/api/mentors/${params.id}`)
+        if (mentorResponse.ok) {
+          const mentorData = await mentorResponse.json()
+          setMentor(mentorData.mentor)
+          setProjects(mentorData.projects || [])
+          setIsWishlisted(mentorData.isWishlisted || false)
+          setIsSubscribed(mentorData.isSubscribed || false)
+        } else if (mentorResponse.status === 404) {
           setMentor(null)
         } else {
           console.error('Failed to fetch mentor')
         }
+
+        // Fetch journal posts
+        const postsResponse = await fetch(`/api/mentors/${params.id}/posts`)
+        if (postsResponse.ok) {
+          const postsData = await postsResponse.json()
+          setJournalPosts(postsData.posts || [])
+        }
       } catch (error) {
-        console.error('Error fetching mentor:', error)
+        console.error('Error fetching mentor data:', error)
       } finally {
         setIsLoading(false)
       }
     }
 
-    fetchMentor()
+    fetchMentorData()
   }, [params.id])
 
   const toggleWishlist = () => {
     setIsWishlisted(!isWishlisted)
     // In real app, make API call to update wishlist
+  }
+
+  const toggleSubscribe = async () => {
+    try {
+      const response = await fetch(`/api/mentors/${params.id}/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ subscribe: !isSubscribed })
+      })
+      
+      if (response.ok) {
+        setIsSubscribed(!isSubscribed)
+      }
+    } catch (error) {
+      console.error('Error toggling subscription:', error)
+    }
   }
 
 
@@ -173,14 +212,17 @@ export default function MentorProfilePage() {
                     </div>
                   </div>
                   <button
-                    onClick={toggleWishlist}
-                    className="flex-shrink-0 p-2 rounded-full hover:bg-gray-100"
+                    onClick={toggleSubscribe}
+                    className="flex-shrink-0 flex items-center space-x-2 p-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
                   >
-                    {isWishlisted ? (
-                      <HeartSolidIcon className="h-6 w-6 text-red-500" />
+                    {isSubscribed ? (
+                      <HeartSolidIcon className="h-5 w-5 text-red-500" />
                     ) : (
-                      <HeartIcon className="h-6 w-6 text-gray-400 hover:text-red-500" />
+                      <HeartIcon className="h-5 w-5 text-gray-400 hover:text-red-500" />
                     )}
+                    <span className="text-sm font-medium text-gray-700">
+                      {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                    </span>
                   </button>
                 </div>
 
@@ -269,10 +311,47 @@ export default function MentorProfilePage() {
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="text-lg font-bold text-gray-900">${project.price}</div>
+                            <div className="text-lg font-bold text-gray-900">${project.price} USD</div>
                           </div>
                         </div>
                       </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Journal Posts */}
+              {journalPosts.length > 0 && (
+                <div className="bg-white rounded-lg shadow p-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Latest Posts</h2>
+                  <div className="space-y-4">
+                    {journalPosts.map((post) => (
+                      <div key={post.id} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="text-lg font-medium text-gray-900">{post.title}</h3>
+                          <span className="text-sm text-gray-500">
+                            {new Date(post.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <p className="text-gray-600 text-sm mb-3">
+                          {post.isPublic ? post.content.substring(0, 200) + '...' : post.excerpt || 'Subscribe to read full content...'}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <span className="mr-4">{post.views} views</span>
+                            {!post.isPublic && (
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                Subscribers Only
+                              </span>
+                            )}
+                          </div>
+                          {!post.isPublic && (
+                            <span className="text-sm text-indigo-600">
+                              Subscribe to read more
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>

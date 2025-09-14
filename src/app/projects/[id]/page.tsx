@@ -250,7 +250,7 @@ export default function ProjectDetailPage() {
               <div className="bg-white rounded-lg shadow p-6 sticky top-6">
                 <div className="text-center mb-6">
                   <div className="text-3xl font-bold text-gray-900 mb-2">
-                    ${project.price}
+                    ${project.price} USD
                   </div>
                   <div className="text-gray-500">One-time payment</div>
                 </div>

@@ -14,7 +14,6 @@ export default function CreateProjectPage() {
     description: '',
     shortDescription: '',
     category: 'TECHNOLOGY',
-    purposes: [] as string[],
     learningPurpose: '',
     difficulty: 'BEGINNER',
     duration: 4,
@@ -66,14 +65,6 @@ export default function CreateProjectPage() {
     }))
   }
 
-  const handlePurposeChange = (purpose: string, checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      purposes: checked 
-        ? [...prev.purposes, purpose]
-        : prev.purposes.filter(p => p !== purpose)
-    }))
-  }
 
   const handleArrayChange = (field: string, index: number, value: string) => {
     setFormData(prev => ({
@@ -101,11 +92,6 @@ export default function CreateProjectPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Validate purposes
-    if (formData.purposes.length === 0) {
-      alert('Please select at least one purpose')
-      return
-    }
 
     // Validate learning purpose
     if (!formData.learningPurpose) {
@@ -248,29 +234,6 @@ export default function CreateProjectPage() {
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Purpose * (Select all that apply)
-                    </label>
-                    <div className="grid grid-cols-2 gap-4">
-                      {[
-                        { value: 'MONETARIZE', label: 'Monetarize' },
-                        { value: 'LEISURE', label: 'Leisure' },
-                        { value: 'CAREER', label: 'Career' },
-                        { value: 'ACADEMIC', label: 'Academic' }
-                      ].map((purpose) => (
-                        <label key={purpose.value} className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={formData.purposes.includes(purpose.value)}
-                            onChange={(e) => handlePurposeChange(purpose.value, e.target.checked)}
-                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                          />
-                          <span className="ml-2 text-sm text-gray-700">{purpose.label}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
 
                   <div>
                     <label htmlFor="learningPurpose" className="block text-sm font-medium text-gray-700">

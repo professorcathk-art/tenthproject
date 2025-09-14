@@ -373,7 +373,7 @@ function ProjectsContent() {
                     <div className="flex items-center">
                       <CurrencyDollarIcon className="h-4 w-4 text-green-600" />
                       <span className="ml-1 text-lg font-bold text-gray-900">
-                        {project.price}
+                        ${project.price} USD
                       </span>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import Navigation from '@/components/navigation'
@@ -47,7 +47,7 @@ const categories = [
 
 const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced']
 
-export default function ProjectsPage() {
+function ProjectsContent() {
   const searchParams = useSearchParams()
   const [projects, setProjects] = useState<Project[]>([])
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([])
@@ -395,5 +395,20 @@ export default function ProjectsPage() {
         onClose={() => setIsModalOpen(false)} 
       />
     </div>
+  )
+}
+
+export default function ProjectsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <div className="flex items-center justify-center h-96">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
+        </div>
+      </div>
+    }>
+      <ProjectsContent />
+    </Suspense>
   )
 }

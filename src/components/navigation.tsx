@@ -20,6 +20,7 @@ export default function Navigation() {
     { name: 'Browse Projects', href: '/projects' },
     { name: 'Find Mentors', href: '/mentors' },
     { name: 'Categories', href: '/categories' },
+    { name: 'Store', href: '/stripe/store' },
   ]
 
   return (
@@ -74,12 +75,26 @@ export default function Navigation() {
                 </Link>
               )}
               {(session.user as { role?: string })?.role === 'MENTOR' && (
-                <Link
-                  href="/mentor-dashboard"
-                  className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
-                >
-                  Mentor Dashboard
-                </Link>
+                <>
+                  <Link
+                    href="/mentor-dashboard"
+                    className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                  >
+                    Mentor Dashboard
+                  </Link>
+                  <Link
+                    href="/stripe/accounts"
+                    className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                  >
+                    Stripe Connect
+                  </Link>
+                  <Link
+                    href="/stripe/products"
+                    className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600"
+                  >
+                    Manage Products
+                  </Link>
+                </>
               )}
               
               <Menu as="div" className="relative">

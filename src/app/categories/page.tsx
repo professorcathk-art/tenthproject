@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import Navigation from '@/components/navigation'
 import SuggestCategoryModal from '@/components/SuggestCategoryModal'
 import { 

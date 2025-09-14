@@ -8,7 +8,6 @@ import {
   HeartIcon,
   StarIcon,
   CheckCircleIcon,
-  ChatBubbleLeftRightIcon,
   GlobeAltIcon,
   AcademicCapIcon,
   BriefcaseIcon,

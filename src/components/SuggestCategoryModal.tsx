@@ -89,7 +89,7 @@ export default function SuggestCategoryModal({ isOpen, onClose }: SuggestCategor
                 Thank you for your suggestion!
               </h3>
               <p className="text-sm text-gray-600 mb-4">
-                We'll review your area suggestion and get back to you soon.
+                We&apos;ll review your area suggestion and get back to you soon.
               </p>
               <button
                 onClick={() => {

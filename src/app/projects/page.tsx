@@ -64,7 +64,21 @@ export default function ProjectsPage() {
         if (response.ok) {
           const data = await response.json()
           // Transform the data to match our interface
-          const transformedProjects: Project[] = data.projects.map((project: any) => ({
+          const transformedProjects: Project[] = data.projects.map((project: {
+            id: string;
+            title: string;
+            description: string;
+            category: string;
+            difficulty: string;
+            duration: number;
+            price: number;
+            currency: string;
+            mentor: {
+              rating?: number;
+              totalReviews?: number;
+              user: { name?: string };
+            };
+          }) => ({
             id: project.id,
             title: project.title,
             description: project.description,

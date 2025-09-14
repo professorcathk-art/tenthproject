@@ -58,7 +58,20 @@ export default function MentorsPage() {
         if (response.ok) {
           const data = await response.json()
           // Transform the data to match our interface
-          const transformedMentors: Mentor[] = data.mentors.map((mentor: any) => ({
+          const transformedMentors: Mentor[] = data.mentors.map((mentor: {
+            id: string;
+            user: { name: string; email: string };
+            bio?: string;
+            specialties: string[];
+            experience?: string;
+            rating: number;
+            totalReviews: number;
+            isVerified: boolean;
+            languages: string[];
+            hourlyRate?: number;
+            totalStudents: number;
+            projectsCount: number;
+          }) => ({
             id: mentor.id,
             name: mentor.user.name || 'Anonymous',
             bio: mentor.bio || 'No bio available',

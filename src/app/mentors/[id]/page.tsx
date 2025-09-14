@@ -68,7 +68,6 @@ export default function MentorProfilePage() {
   const [projects, setProjects] = useState<Project[]>([])
   const [journalPosts, setJournalPosts] = useState<JournalPost[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isWishlisted, setIsWishlisted] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
 
   useEffect(() => {

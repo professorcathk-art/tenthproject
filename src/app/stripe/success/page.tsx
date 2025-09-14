@@ -202,7 +202,7 @@ export default function StripeSuccessPage() {
 
               {/* Next Steps */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-                <h3 className="text-lg font-medium text-blue-900 mb-2">What's Next?</h3>
+                <h3 className="text-lg font-medium text-blue-900 mb-2">What&apos;s Next?</h3>
                 <p className="text-blue-800 mb-4">
                   Your payment has been processed and the seller has been notified. 
                   You should receive an email confirmation shortly with details about your purchase.
@@ -236,7 +236,7 @@ export default function StripeSuccessPage() {
             <div className="text-center">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Payment Status Unknown</h1>
               <p className="text-gray-600 mb-6">
-                We couldn't retrieve the payment details. Please check your email for confirmation.
+                We couldn&apos;t retrieve the payment details. Please check your email for confirmation.
               </p>
               <Link
                 href="/stripe/store"

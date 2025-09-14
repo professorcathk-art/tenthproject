@@ -16,7 +16,7 @@ import { stripe } from '@/lib/stripe'
  * - Platform handles losses/refunds/chargebacks
  * - Express dashboard access for account management
  */
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Step 1: Authenticate the user
     const session = await getServerSession(authOptions)

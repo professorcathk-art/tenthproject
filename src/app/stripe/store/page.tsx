@@ -9,8 +9,7 @@ import {
   CurrencyDollarIcon,
   GlobeAltIcon,
   CheckCircleIcon,
-  XCircleIcon,
-  ArrowTopRightOnSquareIcon
+  XCircleIcon
 } from '@heroicons/react/24/outline'
 
 interface Product {
@@ -39,8 +38,7 @@ interface Product {
 }
 
 export default function StripeStorePage() {
-  const { data: session, status } = useSession()
-  const router = useRouter()
+  const { status } = useSession()
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)

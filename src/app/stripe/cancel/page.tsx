@@ -41,7 +41,7 @@ export default function StripeCancelPage() {
                 </ul>
                 
                 <p className="mt-4">
-                  Don't worry - no payment has been processed and your payment method 
+                  Don&apos;t worry - no payment has been processed and your payment method 
                   has not been charged.
                 </p>
               </div>

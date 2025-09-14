@@ -1,14 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import Navigation from '@/components/navigation'
 import { CheckCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
 export default function OnboardSuccessPage() {
   const searchParams = useSearchParams()
-  const router = useRouter()
   const accountId = searchParams.get('account_id')
   const [isLoading, setIsLoading] = useState(true)
 
@@ -69,7 +68,7 @@ export default function OnboardSuccessPage() {
 
             {/* Information Card */}
             <div className="bg-white shadow rounded-lg p-6 mb-8 text-left">
-              <h2 className="text-lg font-medium text-gray-900 mb-4">What's Next?</h2>
+              <h2 className="text-lg font-medium text-gray-900 mb-4">What&apos;s Next?</h2>
               
               <div className="space-y-4 text-sm text-gray-600">
                 <div className="flex items-start">

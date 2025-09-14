@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const price = product.default_price as any // Type assertion for expanded price
+    const price = product.default_price as Stripe.Price // Type assertion for expanded price
     const unitAmount = price.unit_amount
     const currency = price.currency
 

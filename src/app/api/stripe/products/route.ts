@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
     const transformedProducts = await Promise.all(
       products.data.map(async (product) => {
         // Get the default price details
-        const defaultPrice = product.default_price as any // Type assertion for expanded price
+        const defaultPrice = product.default_price as Stripe.Price // Type assertion for expanded price
         
         // Get connected account details if available
         let connectedAccountInfo = null

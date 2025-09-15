@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Navigation from '@/components/navigation'
 import { CheckCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
-export default function OnboardSuccessPage() {
+function OnboardSuccessContent() {
   const searchParams = useSearchParams()
   const accountId = searchParams.get('account_id')
   const [isLoading, setIsLoading] = useState(true)
@@ -153,5 +153,20 @@ export default function OnboardSuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function OnboardSuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <div className="flex items-center justify-center h-96">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
+        </div>
+      </div>
+    }>
+      <OnboardSuccessContent />
+    </Suspense>
   )
 }

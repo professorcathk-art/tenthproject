@@ -52,6 +52,15 @@ export async function POST(request: NextRequest) {
     }
 
     const price = product.default_price as Stripe.Price // Type assertion for expanded price
+    
+    // Validate price data
+    if (!price.unit_amount) {
+      return NextResponse.json(
+        { message: 'Product price is not set' },
+        { status: 400 }
+      )
+    }
+    
     const unitAmount = price.unit_amount
     const currency = price.currency
 

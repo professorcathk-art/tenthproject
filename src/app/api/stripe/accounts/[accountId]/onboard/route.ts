@@ -132,14 +132,13 @@ export async function PUT(
       accountId,
       userId: session.user.email,
       linkUrl: loginLink.url,
-      expires: new Date(loginLink.expires_at * 1000).toISOString(),
+      // Note: Login links don't have expires_at property
     })
 
     // Step 5: Return the login URL
     return NextResponse.json({
       success: true,
       loginUrl: loginLink.url,
-      expiresAt: loginLink.expires_at,
       message: 'Login link created successfully',
     })
 

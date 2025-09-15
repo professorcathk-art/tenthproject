@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
     
     const unitAmount = price.unit_amount
-    const currency = price.currency
+    const currency = price.currency || 'usd' // Default to USD if currency is null
 
     // Step 6: Calculate total amount and application fee
     const totalAmount = unitAmount * quantity

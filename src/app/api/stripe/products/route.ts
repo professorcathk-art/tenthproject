@@ -187,7 +187,7 @@ export async function GET(request: NextRequest) {
           active: product.active,
           created: product.created,
           metadata: product.metadata,
-          price: defaultPrice ? {
+          price: defaultPrice && defaultPrice.unit_amount && defaultPrice.currency ? {
             id: defaultPrice.id,
             unit_amount: defaultPrice.unit_amount,
             currency: defaultPrice.currency,

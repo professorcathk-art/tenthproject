@@ -79,7 +79,6 @@ export default function MentorProfilePage() {
           const mentorData = await mentorResponse.json()
           setMentor(mentorData.mentor)
           setProjects(mentorData.projects || [])
-          setIsWishlisted(mentorData.isWishlisted || false)
           setIsSubscribed(mentorData.isSubscribed || false)
         } else if (mentorResponse.status === 404) {
           setMentor(null)

@@ -2,20 +2,33 @@ import Stripe from 'stripe'
 
 // Initialize Stripe with the latest API version
 // IMPORTANT: Replace 'sk_test_...' with your actual Stripe secret key
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY
+const getStripeSecretKey = () => {
+  const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 
-if (!stripeSecretKey) {
-  throw new Error(
-    '❌ STRIPE_SECRET_KEY environment variable is required. ' +
-    'Please add your Stripe secret key to your .env file. ' +
-    'Get your key from: https://dashboard.stripe.com/apikeys'
-  )
+  if (!stripeSecretKey) {
+    throw new Error(
+      '❌ STRIPE_SECRET_KEY environment variable is required. ' +
+      'Please add your Stripe secret key to your .env file. ' +
+      'Get your key from: https://dashboard.stripe.com/apikeys'
+    )
+  }
+
+  return stripeSecretKey
 }
 
-// Initialize Stripe instance with the latest API version
-export const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: '2025-08-27.basil', // Latest Stripe API version
-  typescript: true, // Enable TypeScript support
+// Initialize Stripe instance with lazy loading to avoid build-time errors
+let stripeInstance: Stripe | null = null
+
+export const stripe = new Proxy({} as Stripe, {
+  get(target, prop) {
+    if (!stripeInstance) {
+      stripeInstance = new Stripe(getStripeSecretKey(), {
+        apiVersion: '2025-08-27.basil', // Latest Stripe API version
+        typescript: true, // Enable TypeScript support
+      })
+    }
+    return stripeInstance[prop as keyof Stripe]
+  }
 })
 
 // Get the publishable key for client-side operations

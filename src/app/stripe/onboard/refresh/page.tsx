@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Navigation from '@/components/navigation'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
-export default function OnboardRefreshPage() {
+function OnboardRefreshContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const accountId = searchParams.get('account_id')
@@ -82,5 +82,20 @@ export default function OnboardRefreshPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function OnboardRefreshPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50">
+        <Navigation />
+        <div className="flex items-center justify-center h-96">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-indigo-600"></div>
+        </div>
+      </div>
+    }>
+      <OnboardRefreshContent />
+    </Suspense>
   )
 }

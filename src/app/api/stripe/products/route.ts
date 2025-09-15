@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
+import Stripe from 'stripe'
 
 /**
  * Creates a new Stripe product at the platform level

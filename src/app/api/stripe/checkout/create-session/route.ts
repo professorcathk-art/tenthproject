@@ -64,6 +64,14 @@ export async function POST(request: NextRequest) {
     const unitAmount = price.unit_amount
     const currency = price.currency || 'usd' // Default to USD if currency is null
 
+    // Validate product data
+    if (!product.name || !product.description) {
+      return NextResponse.json(
+        { message: 'Product name and description are required' },
+        { status: 400 }
+      )
+    }
+
     // Step 6: Calculate total amount and application fee
     const totalAmount = unitAmount * quantity
     const applicationFeeAmount = calculateApplicationFee(totalAmount)
